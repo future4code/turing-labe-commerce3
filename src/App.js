@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Filtro from './components/Filtro';
+import Itens from './components/Itens';
 
 import iconeCarrinho from './images/carrinho.svg';
 import iconeCadastrar from './images/add.svg';
@@ -33,6 +34,13 @@ const ItensContainer = styled.div `
   flex: 3;
   padding: 16px;
   background-color: #f5f5f5;
+`
+
+const ListItens = styled.div `
+  margin: 16px auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
 `
 
 const ItensHeader = styled.div `
@@ -81,14 +89,14 @@ class App extends React.Component {
     itens: [
       {
         id: Date.now(),
-        texto: "Um produto qualquer",
-        imagem: "",
+        texto: "Ataxito",
+        imagem: "https://media.discordapp.net/attachments/725422422043656239/725424311917084752/ataxito.jpg?width=586&height=586",
         valor: 40
       },
       {
         id: Date.now(),
-        texto: "Outro produto qualquer",
-        imagem: "",
+        texto: "Brenham",
+        imagem: "https://media.discordapp.net/attachments/725422422043656239/725424316816031794/brenham.jpg?width=586&height=586",
         valor: 80
       }
     ],
@@ -243,12 +251,11 @@ class App extends React.Component {
               <p>Quantidade de de Produtos: {totalItens()} </p>
               <Filtro options={["Ordem crescente", "Ordem decrescente"]}/>
             </ItensHeader>
+            <ListItens>
               {itensFiltrados.map( item => {
-                return <div key={item.id}>
-                  <p>{item.texto}</p>
-                  <p>{item.valor}</p>
-                </div>
+                return <Itens key={item.id} tituloItem={item.texto} precoItem={item.valor} src={item.imagem}/>
               })}
+            </ListItens>
           </ItensContainer>
           <CarrinhoContainer>
             <h2>Carrinho</h2>
