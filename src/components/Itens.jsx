@@ -1,18 +1,19 @@
 import React from 'react';
-import styled from 'styled-component'
+import styled from 'styled-components'
 
 //ESTILO
 const Card = styled.div`
     border: solid 1px orange;
     padding: 5px;
-    width: 17%;
+    margin: 0 16px;
+    max-width: 25%;
 `
 const Imagem = styled.img`
     width: 100%;
     margin-bottom: 10px;
 `
 const P = styled.p`
-    font-size: 3rem;
+    font-size: 2rem;
     margin-bottom: 10px;
 `
 const AddCarrinho = styled.button`
@@ -29,7 +30,7 @@ export default class Itens extends React.Component {
         <Card>
             <Imagem src={this.props.src} alt={this.props.alt}></Imagem>
             <P>{this.props.tituloItem}</P>
-            <P>{this.props.precoItem}</P>
+            <P>R$ {this.props.precoItem}</P>
             <AddCarrinho>Adicionar ao Carrinho</AddCarrinho>
         </Card>
     );
