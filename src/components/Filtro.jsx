@@ -19,6 +19,7 @@ export default props =>{
     const handleChange = props.handleChange || function(){};
     const arrayOptions = props.options || [] 
     const handleSelectChange = props.handleSelectChange || function(){}
+    const InputType = props.type || "text"
     
     const Select =  <select onChange={handleSelectChange}>
                         {arrayOptions.map( (options, i, a) =>{
@@ -28,7 +29,7 @@ export default props =>{
     
     const Input = <ContainerInput>
                             <label>{titulo}</label>
-                            <input onChange={handleChange} type={props.type}/>
+                            <input onChange={handleChange} type={InputType}/>
                         </ContainerInput>;
     
     const show =  !props.isInput ? <>{Select}</> : <>{Input}</> 
