@@ -20,6 +20,8 @@ export default props =>{
     const arrayOptions = props.options || [] 
     const handleSelectChange = props.handleSelectChange || function(){}
     const InputType = props.type || "text"
+    const minimo =  props.min || 0
+    const max =  props.max || 1000
     
     const Select =  <select onChange={handleSelectChange}>
                         {arrayOptions.map( (options, i, a) =>{
@@ -29,7 +31,7 @@ export default props =>{
     
     const Input = <ContainerInput>
                             <label>{titulo}</label>
-                            <input onChange={handleChange} type={InputType}/>
+                            <input onChange={handleChange} type={InputType} min={minimo} max={max}/>
                         </ContainerInput>;
     
     const show =  !props.isInput ? <>{Select}</> : <>{Input}</> 
