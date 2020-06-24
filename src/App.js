@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Filtro from './components/Filtro';
 import Itens from './components/Itens';
+import Carrinho from './components/Carrinho';
 
 import iconeCarrinho from './images/carrinho.svg';
 import iconeCadastrar from './images/add.svg';
@@ -48,11 +49,6 @@ const ItensHeader = styled.div `
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
-
-const CarrinhoContainer = styled.div `
-  flex: 1;
-  padding: 16px;
 `
 
 const CadastrarContainer = styled.div `
@@ -122,7 +118,8 @@ class App extends React.Component {
     valorInputNovoImg: "",
     valorInputNovoValor: "",
 
-    showCadastrar: false
+    showCadastrar: false,
+    apertouBotaoCarrinho: false
   }
 
   onChangeValorMinimo = event => {
@@ -179,6 +176,11 @@ class App extends React.Component {
   //Carrinho
 
   //condicional mostra carrinho
+
+  onClickAbrirCarrinho = () => {
+    this.setState({apertouBotaoCarrinho: !this.state.apertouBotaoCarrinho})
+  } 
+
   // funcao quando clica no carrinho, acrescenta a uma lista de selecionado, para somar depois
   //funcao calcula valor total
 
@@ -213,6 +215,12 @@ class App extends React.Component {
       else {
         return total;
       }
+    }
+    
+    const renderCarrinho = () => {
+            if (this.state.apertouBotaoCarrinho) {
+                return <Carrinho />
+            } 
     }
 
     const cadastroNovoProduto = () => {
@@ -257,17 +265,19 @@ class App extends React.Component {
               })}
             </ListItens>
           </ItensContainer>
-          <CarrinhoContainer>
+          {renderCarrinho()}
+          {/* <CarrinhoContainer>
             <h2>Carrinho</h2>
             <p>Valor total: R${valorTotal()} </p>
+            {}
 
-          </CarrinhoContainer>
+          </CarrinhoContainer> */}
           {cadastroNovoProduto()}
           <BtnContainer>
             <BtnCarrinho onClick={this.onClickShowCadastrar}>
               <Icone src={iconeCadastrar} alt="icone carrinho"/>
             </BtnCarrinho>
-            <BtnCarrinho>
+            <BtnCarrinho onClick={this.onClickAbrirCarrinho} >
               <Icone src={iconeCarrinho} alt="icone carrinho"/>
             </BtnCarrinho>
           </BtnContainer>
