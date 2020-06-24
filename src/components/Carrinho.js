@@ -4,10 +4,8 @@ import styled from "styled-components"
 const ContainerCarrinho = styled.div`
     border: 1px solid black;
     margin: 0;
-    width: 30vw;   
-    min-height: 100vh;
-    position: absolute;
-    right: 0;
+    flex: 1;
+    padding: 16px;
 `
 
 class Carrinho extends React.Component {
