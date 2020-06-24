@@ -28,7 +28,7 @@ export default props =>{
     
     const Input = <ContainerInput>
                             <label>{titulo}</label>
-                            <input onChange={handleChange}/>
+                            <input onChange={handleChange} type={props.type}/>
                         </ContainerInput>;
     
     const show =  !props.isInput ? <>{Select}</> : <>{Input}</> 
