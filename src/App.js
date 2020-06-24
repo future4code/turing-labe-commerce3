@@ -166,7 +166,6 @@ class App extends React.Component {
 
     const novalistaItens = [...this.state.itens, novoItem];
     this.setState({ itens: novalistaItens, id:"", texto:"", imagem:"", valor:"", valorInputNovoTexto:"", valorInputNovoImg:"", valorInputNovoValor:"" })
-    console.log(this.state.itens)
   }
 
   //Carrinho
