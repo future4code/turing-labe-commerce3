@@ -35,6 +35,13 @@ const ItensContainer = styled.div `
   background-color: #f5f5f5;
 `
 
+const ItensHeader = styled.div `
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
 const CarrinhoContainer = styled.div `
   flex: 1;
   padding: 16px;
@@ -226,20 +233,23 @@ class App extends React.Component {
         <Main>
           <FiltroContainer>
             <h2>Filtro</h2>
-            <Filtro isInput="true" titulo="Valor Mínimo" type="number" handleChange={this.onChangeValorMinimo}/>
-            <Filtro isInput="true" titulo="Valor Máximo" type="number" handleChange={this.onChangeValorMaximo}/>
+            <Filtro isInput="true" titulo="Valor Mínimo" type="number" min="0" handleChange={this.onChangeValorMinimo}/>
+            <Filtro isInput="true" titulo="Valor Máximo" type="number" max="1000" handleChange={this.onChangeValorMaximo}/>
             <Filtro isInput="true" titulo="Burcas produto"handleChange={this.onChangeValorBusca} />
 
           </FiltroContainer>
           <ItensContainer>
             <h2>Produtos</h2>
-            <p>Quantidade de de Produtos: {totalItens()} </p>
-            {itensFiltrados.map( item => {
-              return <div key={item.id}>
-                <p>{item.texto}</p>
-                <p>{item.valor}</p>
-              </div>
-            })}
+            <ItensHeader>
+              <p>Quantidade de de Produtos: {totalItens()} </p>
+              <Filtro options={["Ordem crescente", "Ordem decrescente"]}/>
+            </ItensHeader>
+              {itensFiltrados.map( item => {
+                return <div key={item.id}>
+                  <p>{item.texto}</p>
+                  <p>{item.valor}</p>
+                </div>
+              })}
           </ItensContainer>
           <CarrinhoContainer>
             <h2>Carrinho</h2>
