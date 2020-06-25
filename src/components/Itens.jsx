@@ -39,7 +39,7 @@ export default class Itens extends React.Component {
             <Imagem src={this.props.src} alt={this.props.alt}></Imagem>
             <P>{this.props.tituloItem}</P>
             <P>R$ {this.props.precoItem}</P>
-            <AddCarrinho>Adicionar ao Carrinho</AddCarrinho>
+            <AddCarrinho onClick={this.props.adiciona}>Adicionar ao Carrinho</AddCarrinho>
         </Card>
     );
   };
