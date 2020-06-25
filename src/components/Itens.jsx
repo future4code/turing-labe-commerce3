@@ -35,7 +35,7 @@ const AddCarrinho = styled.button`
 export default props => {
     
     return(
-        <Card onClick={props.handleCardClick}>
+        <Card>
             <Imagem onClick={props.handleCardClick} src={props.src} alt={props.alt}></Imagem>
             <P onClick={props.handleCardClick}>{props.tituloItem} </P>
             <P onClick={props.handleCardClick}>R$ {props.precoItem}</P>

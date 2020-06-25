@@ -66,7 +66,9 @@ class Carrinho extends React.Component {
 
     render() {
 
-        const carrinhoNaTela = this.state.itens.map ((item) =>   {           
+        const carrinhoNaTela = this.state.itens.map ((item) =>   {
+            console.log(item)     
+            console.log(item.id)      
             return  (
                 <li key={item.id}>{item.quantidade}x {item.texto} <button onClick={() => this.apagarItem(item.id)}>Apagar</button></li> 
             )
