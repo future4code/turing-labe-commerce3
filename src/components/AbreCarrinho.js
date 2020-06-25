@@ -1,7 +1,6 @@
 import React from "react"
 import styled from "styled-components"
 import Carrinho from './Carrinho'
-import ImagemCarrinho from '../imagens/car.png'
 
 const BotaoCarrinho = styled.button`
     position: absolute;
@@ -22,7 +21,9 @@ class AbreCarrinho extends React.Component {
 
         const renderCarrinho = () => {
             if (this.state.apertouBotaoCarrinho) {
-                return <Carrinho />
+                return <Carrinho 
+                        lista = {this.props.lista} 
+                        />
             } 
         }
 
