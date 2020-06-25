@@ -9,6 +9,7 @@ const ContainerCarrinho = styled.div`
     padding: 16px;
 `
 let resultadoTotal = 0
+let atualizaLista = "";
 
 class Carrinho extends React.Component {
 
@@ -18,59 +19,29 @@ class Carrinho extends React.Component {
         resultadoTotal += item.quantidade * item.valor        
         })
 
-        this.setState({resultado: resultadoTotal}) 
+        this.setState({resultado: resultadoTotal})
+        
+    }
+
+    componentDidUpdate () {
+        atualizaLista = this.state.itens.map( (item) => {
+            return item;
+        })
+        console.log(atualizaLista)
     }
 
     state = {
         resultado: 0,
-        itens: this.props.lista
+        itens: this.props.lista || []
     }
-  
-    apagarItem = (ItemId) => {
 
-        const novaListaDoCarrinho = this.state.itens.map((item) => {
-            if (ItemId === item.id) {
-
-                const novoItem = {
-                    ...item,
-                    quantidade: 0
-                }
-             
-                return novoItem
-
-            } else {
-                return item
-              }
-        })
-
-        this.setState({itens: novaListaDoCarrinho})
-
-        const novaListaDoCarrinho2 = this.state.itens.filter((item) => {
-            return (ItemId !== item.id)
-        })
-
-        this.setState({itens: novaListaDoCarrinho2})
-
-        this.state.itens.forEach ((item) => {
-        console.log(item.quantidade, item.valor)
-        if (ItemId === item.id) {
-            resultadoTotal -= item.quantidade * item.valor   
-        }     
-        })
-
-        this.setState({resultado: resultadoTotal})
-
-        
-
-    }   
 
     render() {
 
+        console.log(this.props.lista)
         const carrinhoNaTela = this.state.itens.map ((item) =>   {
-            console.log(item)     
-            console.log(item.id)      
             return  (
-                <li key={item.id}>{item.quantidade}x {item.texto} <button onClick={() => this.apagarItem(item.id)}>Apagar</button></li> 
+                <li key={item.id}>{item.quantidade}x {item.texto} <button id={item.id} onClick={this.props.apagarItem}>Apagar</button></li>
             )
         }) 
 
@@ -78,7 +49,7 @@ class Carrinho extends React.Component {
             <ContainerCarrinho>
                 <h2>Carrinho</h2>
                 <ul>
-                    {carrinhoNaTela} 
+                    {atualizaLista}
                 </ul>
                 <p>Total <b>R$ {this.state.resultado}</b></p>
             </ContainerCarrinho>          

@@ -89,7 +89,7 @@ class App extends React.Component {
         texto: "Ataxito",
         imagem: "https://media.discordapp.net/attachments/725422422043656239/725424311917084752/ataxito.jpg?width=586&height=586",
         valor: 40,
-        quatidade: 1
+        quantidade: 1
       },
       {
         id: Date.now() + 1,
@@ -100,7 +100,7 @@ class App extends React.Component {
       }
     ],
 
-    itensSelecionados: [],
+    itensSelecionados: "",
     
     valorInputValorMinimo: "",
     valorInputValorMaximo: "",
@@ -180,20 +180,31 @@ class App extends React.Component {
   //Adiciona item ao Carrinho
 
   onClickSelecionaItem = id => {
-    const novaListaDoCarrinho = this.state.itens.filter((item) => {
-      if (id === item.id) {
-          const novoItem = {
-              ...item,
-              quantidade: 1
-          }
-          return novoItem
-      }
+
+    const itemSelecionado = this.state.itens.filter((item) => {
+      return item.id === id
     })
 
-    const novaListaSelecionados = [...this.state.itensSelecionados, novaListaDoCarrinho];
-
-    this.setState({itensSelecionados: novaListaSelecionados})    
+    itemSelecionado.forEach( item => {
+      if ( this.state.itensSelecionados.includes(item) ) {
+        item.quantidade += 1
+      } else {
+        this.setState({ itensSelecionados: [...this.state.itensSelecionados, item] })
+      }
+    })
+    
   } 
+
+  onClickApagarItem = event => {
+
+    const novaLista = this.state.itensSelecionados.filter( item => {
+      return item.id !== Number(event.target.id)
+    })
+    console.log(novaLista);
+
+    this.setState({ itensSelecionados: novaLista })
+
+}   
 
 
   render() {
@@ -223,10 +234,10 @@ class App extends React.Component {
       return total;
 
     };
-    
+
     const renderCarrinho = () => {
       if (this.state.apertouBotaoCarrinho) {
-        return <Carrinho lista={this.state.itensSelecionados} />
+        return <Carrinho lista={this.state.itensSelecionados} apagarItem={this.onClickApagarItem}/>
       } 
     }
     
