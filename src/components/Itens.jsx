@@ -3,25 +3,33 @@ import styled from 'styled-components'
 
 //ESTILO
 const Card = styled.div`
-    border: solid 1px orange;
+    border-radius: 20px;
     padding: 5px;
     margin: 0 16px;
-    max-width: 25%;
+    max-width: 19.5%;
+    background: white;
+    box-shadow: 2px 2px 5px gray;
+    text-align: center;
 `
 const Imagem = styled.img`
     width: 100%;
-    margin-bottom: 10px;
 `
 const P = styled.p`
     font-size: 2rem;
     margin-bottom: 10px;
+    padding: 3px;
 `
 const AddCarrinho = styled.button`
-    width: 100%;
-    padding: 4px;
+    width: 70%;
+    padding: 8px;
     text-align: center;
     color: white;
     background: gray;
+    margin-bottom: 20px;
+    border: 0;
+    outline: 0;
+    border-radius: 8px;
+    box-shadow: 1px 1px 2px black;
 `
 //COMPONENTE
 export default class Itens extends React.Component {
