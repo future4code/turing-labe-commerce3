@@ -87,33 +87,22 @@ class App extends React.Component {
         id: Date.now(),
         texto: "Ataxito",
         imagem: "https://media.discordapp.net/attachments/725422422043656239/725424311917084752/ataxito.jpg?width=586&height=586",
-        valor: 40
+        valor: 40,
+        quatidade: 0
       },
       {
         id: Date.now(),
         texto: "Brenham",
         imagem: "https://media.discordapp.net/attachments/725422422043656239/725424316816031794/brenham.jpg?width=586&height=586",
-        valor: 80
+        valor: 80,
+        quantidade: 0
       }
     ],
-    itensSelecionados: [
-      {
-        id: Date.now(),
-        texto: "Um produto qualquer",
-        imagem: "",
-        valor: 40
-      },
-      {
-        id: Date.now(),
-        texto: "Outro produto qualquer",
-        imagem: "",
-        valor: 80
-      },
-    ],
-    carrinho: true,
+    
     valorInputValorMinimo: "",
     valorInputValorMaximo: "",
     valorInputValorBusca: "",
+
     valorInputNovoTexto: "",
     valorInputNovoImg: "",
     valorInputNovoValor: "",
@@ -187,7 +176,21 @@ class App extends React.Component {
 
   render() {
 
-    const itensFiltrados = this.state.itens.filter( item => item.valor > this.state.valorInputValorMinimo ? item.texto : null);
+    const itensFiltrados = this.state.itens.filter( item => {
+      const texto = item.texto.toLowerCase();
+      if (this.state.valorInputValorMinimo !== "" && this.state.valorInputValorMaximo !== "" && this.state.valorInputValorBusca !== "" ) {
+        return item.valor >= this.state.valorInputValorMinimo && item.valor <= this.state.valorInputValorMaximo && texto.includes(this.state.valorInputValorBusca)
+      } else if (this.state.valorInputValorMinimo !== "") {
+        return item.valor >= this.state.valorInputValorMinimo 
+      } else if (this.state.valorInputValorMaximo !== "") {
+        return item.valor <= this.state.valorInputValorMaximo
+      } else if (this.state.valorInputValorBusca !== "") {
+        return texto.includes(this.state.valorInputValorBusca)
+      } else if (this.state.valorInputValorMinimo === "" && this.state.valorInputValorMaximo === "" && this.state.valorInputValorBusca === "" ) {
+        return item.texto;
+      }
+
+    });
 
     const totalItens = () => {
       if(this.itensFiltrados) {
@@ -204,18 +207,6 @@ class App extends React.Component {
         return "0"
       }
     };
-
-    const valorTotal = () => {
-      const total = this.state.itensSelecionados.reduce( (current, item) => {
-        return current + item.valor
-      }, 0)
-      if (this.state.itens === "[]") {
-        return "0";
-      } 
-      else {
-        return total;
-      }
-    }
     
     const renderCarrinho = () => {
             if (this.state.apertouBotaoCarrinho) {
@@ -250,7 +241,7 @@ class App extends React.Component {
             <h2>Filtro</h2>
             <Filtro isInput="true" titulo="Valor Mínimo" type="number" min="0" handleChange={this.onChangeValorMinimo}/>
             <Filtro isInput="true" titulo="Valor Máximo" type="number" max="1000" handleChange={this.onChangeValorMaximo}/>
-            <Filtro isInput="true" titulo="Burcas produto"handleChange={this.onChangeValorBusca} />
+            <Filtro isInput="true" titulo="Buscar produto"handleChange={this.onChangeValorBusca} />
 
           </FiltroContainer>
           <ItensContainer>
@@ -260,8 +251,8 @@ class App extends React.Component {
               <Filtro options={["Ordem crescente", "Ordem decrescente"]}/>
             </ItensHeader>
             <ListItens>
-              {itensFiltrados.map( item => {
-                return <Itens key={item.id} tituloItem={item.texto} precoItem={item.valor} src={item.imagem}/>
+              {itensFiltrados.map( (item, i, a) => {
+                return <Itens key={item.id + i} tituloItem={item.texto} precoItem={item.valor} src={item.imagem}/>
               })}
             </ListItens>
           </ItensContainer>

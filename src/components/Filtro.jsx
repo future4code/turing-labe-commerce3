@@ -25,7 +25,7 @@ export default props =>{
     
     const Select =  <select onChange={handleSelectChange}>
                         {arrayOptions.map( (options, i, a) =>{
-                             return <option value={i}>{options}</option>
+                             return <option key={i} value={i}>{options}</option>
                         })}
                     </select>;
     
