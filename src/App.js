@@ -25,11 +25,23 @@ const Main = styled.div `
   display: flex;
   align-items: stretch;
   justify-content: stretch;
+  flex-wrap: wrap;
 `
 
 const FiltroContainer = styled.div `
-  flex: 1;
+  width: 100%;
   padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (max-width: 500px) {
+    flex-direction: column;
+  }
+`
+
+const FiltroTitulo = styled.h3 `
+  margin: 0 8px;
 `
 
 const ItensContainer = styled.div `
@@ -39,10 +51,11 @@ const ItensContainer = styled.div `
 `
 
 const ListItens = styled.div `
-  margin: 16px auto;
+  margin: auto;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
+  flex-wrap: wrap;
 `
 
 const ItensHeader = styled.div `
@@ -55,7 +68,7 @@ const ItensHeader = styled.div `
 const CadastrarContainer = styled.div `
   flex: 1;
   padding: 16px;
-  background-color: #f5f5f5;
+  background-color: #ffffff;
 `
 
 const BtnContainer = styled.div `
@@ -69,7 +82,7 @@ const BtnCarrinho = styled.button `
   height: 72px;
   padding: 8px;
   margin: 0 8px;
-  background-color: transparent;
+  background-color: #FFFFFF;
   border-radius: 50%;
   border: none;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.75);
@@ -85,16 +98,37 @@ class App extends React.Component {
   state = {
     itens: [
       {
-        id: Date.now(),
-        texto: "Ataxito",
-        imagem: "https://media.discordapp.net/attachments/725422422043656239/725424311917084752/ataxito.jpg?width=586&height=586",
-        valor: 40,
+        id: 123,
+        texto: "Camiseta manga comprida Take me",
+        imagem: "https://ordertees.net/wp-content/uploads/2019/08/Vintage-Never-Forget-Pluto-T-Shirt-Funny-Space-Graphic-Tees.jpg",
+        valor: 100,
         quantidade: 1
       },
       {
-        id: Date.now() + 1,
-        texto: "Brenham",
-        imagem: "https://media.discordapp.net/attachments/725422422043656239/725424316816031794/brenham.jpg?width=586&height=586",
+        id: 1234,
+        texto: "Camiseta Warning Ufo lover",
+        imagem: "https://i.ebayimg.com/images/g/NXkAAOSwX61ZLqqK/s-l300.jpg",
+        valor: 80,
+        quantidade: 1
+      },
+      {
+        id: 1235,
+        texto: "Camiseta I need more space",
+        imagem: "https://images-na.ssl-images-amazon.com/images/I/71DLm-1N5yL._UL1500_.jpg",
+        valor: 80,
+        quantidade: 1
+      },
+      {
+        id: 1236,
+        texto: "Camiseta Pluto never forget",
+        imagem: "https://printteestore.com/wp-content/uploads/2019/Image/636952023189511389/Vintage-Never-Forget-Pluto-Funny-Space-Graphic_Premium-T-shirt_True-Royal.JPEG",
+        valor: 80,
+        quantidade: 1
+      },
+      {
+        id: 1236,
+        texto: "Camiseta Pluto never forget",
+        imagem: "https://printteestore.com/wp-content/uploads/2019/Image/636952023189511389/Vintage-Never-Forget-Pluto-Funny-Space-Graphic_Premium-T-shirt_True-Royal.JPEG",
         valor: 80,
         quantidade: 1
       }
@@ -112,8 +146,18 @@ class App extends React.Component {
 
     showCadastrar: false,
     apertouBotaoCarrinho: false,
-    abreCard: false
+    abreCard: false,
+    idItemClicado: ""
   }
+
+  componentDidUpdate() {
+    localStorage.setItem("tarefas", JSON.stringify(this.state.tarefas))
+  };
+
+  componentDidMount() {
+    const tarefasString = localStorage.getItem("tarefa");
+    const tarefasObjeto = JSON.parse(tarefasString);
+  };
 
   onChangeValorMinimo = event => {
     this.setState({valorInputValorMinimo: event.target.value})
@@ -126,14 +170,6 @@ class App extends React.Component {
   onChangeValorBusca = event => {
     this.setState({valorInputValorBusca: event.target.value})
   }
-
-
-  //Filtro
-
-  //funcao filtra por valor máximo e mostra no itens
-  //funcao filtra por valor minimo e mostra no itens
-  //funcao filtra por palavra e mostra no itens
-
 
   //Itens
 
@@ -174,7 +210,8 @@ class App extends React.Component {
   //Abre Card
 
   onClickAbrirCard = id => {
-    this.setState({abreCard: !this.state.abreCard})
+    this.setState({abreCard: !this.state.abreCard})  
+    this.setState({idItemClicado: id})  
   } 
 
   //Adiciona item ao Carrinho
@@ -192,7 +229,10 @@ class App extends React.Component {
         this.setState({ itensSelecionados: [...this.state.itensSelecionados, item] })
       }
     })
-    
+
+    if (!this.state.apertouBotaoCarrinho) {
+      this.setState({apertouBotaoCarrinho: !this.state.apertouBotaoCarrinho})
+    }
   } 
 
   onClickApagarItem = event => {
@@ -200,12 +240,21 @@ class App extends React.Component {
     const novaLista = this.state.itensSelecionados.filter( item => {
       return item.id !== Number(event.target.id)
     })
-    console.log(novaLista);
 
     this.setState({ itensSelecionados: novaLista })
 
-}   
-
+  }
+  
+  onChangeOrdena = event => {
+    this.state.itens.sort((a, b) => {
+      if ( event.target.value == 1 ) {
+        return parseFloat(a.valor) - parseFloat(b.valor);
+      } else if ( event.target.value == 2 ) {
+        return parseFloat(b.valor) - parseFloat(a.valor);
+      }
+    })
+    this.setState({ itens: this.state.itens });
+  }
 
   render() {
 
@@ -235,14 +284,10 @@ class App extends React.Component {
 
     };
 
-    const renderCarrinho = () => {
-      if (this.state.apertouBotaoCarrinho) {
-        return <Carrinho lista={this.state.itensSelecionados} apagarItem={this.onClickApagarItem}/>
-      } 
-    }
+    const renderCarrinho =  (this.state.apertouBotaoCarrinho) ? <Carrinho lista={this.state.itensSelecionados} apagarItem={this.onClickApagarItem}/> : null;
     
     const itemAberto = this.state.itens.filter( item => {
-      if(item.texto === "Ataxito") {
+      if(item.id === this.state.idItemClicado) {
         return item.texto
       }
     });
@@ -275,11 +320,11 @@ class App extends React.Component {
     return (
       <Home>
         <Header>
-          <HeaderTitle>Labecommerce</HeaderTitle>
+          <HeaderTitle>LabEcommerce</HeaderTitle>
         </Header>
         <Main>
           <FiltroContainer>
-            <h2>Filtro</h2>
+            <FiltroTitulo>Filtro</FiltroTitulo>
             <Filtro isInput="true" titulo="Valor Mínimo" type="number" min="0" handleChange={this.onChangeValorMinimo}/>
             <Filtro isInput="true" titulo="Valor Máximo" type="number" max="1000" handleChange={this.onChangeValorMaximo}/>
             <Filtro isInput="true" titulo="Buscar produto"handleChange={this.onChangeValorBusca} />
@@ -289,7 +334,7 @@ class App extends React.Component {
             <h2>Produtos</h2>
             <ItensHeader>
               <p>Quantidade de de Produtos: {totalItens()} </p>
-              <Filtro options={["Ordem crescente", "Ordem decrescente"]}/>
+              <Filtro handleSelectChange={this.onChangeOrdena} options={["Ordenar", "Ordem crescente", "Ordem decrescente"]}/>
             </ItensHeader>
             <ListItens>
               {itensFiltrados.map( (item, i, a) => {
@@ -298,7 +343,7 @@ class App extends React.Component {
             </ListItens>
           </ItensContainer>
           {renderItemAberto()}
-          {renderCarrinho()}
+          {renderCarrinho}
           {cadastroNovoProduto()}
           <BtnContainer>
             <BtnCarrinho onClick={this.onClickShowCadastrar}>
