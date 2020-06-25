@@ -16,8 +16,8 @@ const Imagem = styled.img`
 `
 const P = styled.p`
     font-size: 2rem;
-    margin-bottom: 10px;
-    padding: 3px;
+    margin-top: 0;
+    margin-bottom: 4px;
 `
 const AddCarrinho = styled.button`
     width: 70%;
