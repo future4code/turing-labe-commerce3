@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Filtro from './components/Filtro';
 import Itens from './components/Itens';
 import Carrinho from './components/Carrinho';
+import Item from './components/Item';
 
 import iconeCarrinho from './images/carrinho.svg';
 import iconeCadastrar from './images/add.svg';
@@ -108,7 +109,8 @@ class App extends React.Component {
     valorInputNovoValor: "",
 
     showCadastrar: false,
-    apertouBotaoCarrinho: false
+    apertouBotaoCarrinho: false,
+    abreCard: false
   }
 
   onChangeValorMinimo = event => {
@@ -162,16 +164,16 @@ class App extends React.Component {
     this.setState({ itens: novalistaItens, id:"", texto:"", imagem:"", valor:"", valorInputNovoTexto:"", valorInputNovoImg:"", valorInputNovoValor:"" })
   }
 
-  //Carrinho
-
-  //condicional mostra carrinho
-
+  //Abre Carrinho
   onClickAbrirCarrinho = () => {
     this.setState({apertouBotaoCarrinho: !this.state.apertouBotaoCarrinho})
   } 
 
-  // funcao quando clica no carrinho, acrescenta a uma lista de selecionado, para somar depois
-  //funcao calcula valor total
+  //Abre Card
+
+  onClickAbrirCard = id => {
+    this.setState({abreCard: !this.state.abreCard})
+  } 
 
 
   render() {
@@ -189,29 +191,38 @@ class App extends React.Component {
       } else if (this.state.valorInputValorMinimo === "" && this.state.valorInputValorMaximo === "" && this.state.valorInputValorBusca === "" ) {
         return item.texto;
       }
-
     });
 
     const totalItens = () => {
-      if(this.itensFiltrados) {
-        const total = this.itensFiltrados.reduce( (current, item, idx, array) => {
-          return array.length
-        })
-        if (this.state.itens === "[]") {
-          return "0";
-        } 
-        else {
-          return total;
-        }
-      } else {
-        return "0"
-      }
+      let total = 0;
+      itensFiltrados.forEach((item, i) => {
+        total = 1;
+        total += i;
+      })
+
+      return total;
+
     };
     
     const renderCarrinho = () => {
-            if (this.state.apertouBotaoCarrinho) {
-                return <Carrinho />
-            } 
+      if (this.state.apertouBotaoCarrinho) {
+        return <Carrinho />
+      } 
+    }
+    
+    const itemAberto = this.state.itens.filter( item => {
+      if(item.texto === "Ataxito") {
+        return item.texto
+      }
+    });
+
+    const renderItemAberto = () => {
+      if(this.state.abreCard) {
+        const item = itemAberto.map( (item, i, a) => {
+          return <Item key={item.id} texto={item.texto} imagem={item.imagem} valor={item.valor} />
+        })
+        return item;
+      }
     }
 
     const cadastroNovoProduto = () => {
@@ -228,7 +239,6 @@ class App extends React.Component {
           </CadastrarContainer>
         )
       }
-    
     }
 
     return (
@@ -252,10 +262,16 @@ class App extends React.Component {
             </ItensHeader>
             <ListItens>
               {itensFiltrados.map( (item, i, a) => {
-                return <Itens key={item.id + i} tituloItem={item.texto} precoItem={item.valor} src={item.imagem}/>
+                return <Itens handleCardClick={() => this.onClickAbrirCard(item.id)} key={item.id + i} tituloItem={item.texto} precoItem={item.valor} src={item.imagem}/>
               })}
             </ListItens>
           </ItensContainer>
+          {/* <div>
+            {itemAberto.map( (item, i, a) => {
+              return <Item texto={item.texto} imagem={item.imagem} valor={item.valor} />
+            })}
+          </div> */}
+          {renderItemAberto()}
           {renderCarrinho()}
           {/* <CarrinhoContainer>
             <h2>Carrinho</h2>
