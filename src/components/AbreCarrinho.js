@@ -19,7 +19,9 @@ class AbreCarrinho extends React.Component {
 
         const renderCarrinho = () => {
             if (this.state.apertouBotaoCarrinho) {
-                return <Carrinho />
+                return <Carrinho 
+                        lista = {this.props.lista} 
+                        />
             } 
         }
 
