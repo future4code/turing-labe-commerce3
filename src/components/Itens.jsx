@@ -4,42 +4,54 @@ import styled from 'styled-components'
 //ESTILO
 const Card = styled.div`
     border-radius: 20px;
-    padding: 5px;
-    margin: 0 16px;
-    max-width: 19.5%;
+    padding: 16px;
+    margin: 16px;
+    min-width: 150px;
+    max-width: 300px;
+    flex: 1;
     background: white;
-    box-shadow: 2px 2px 5px gray;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
     text-align: center;
 `
 const Imagem = styled.img`
     width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 8px;
 `
-const P = styled.p`
-    font-size: 2rem;
+const ItemTitulo = styled.h4`
+    font-size: 1.15rem;
     margin-top: 0;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
+`
+const ItemTexto = styled.p`
+    font-size: 1rem;
+    margin-top: 0;
+    margin-bottom: 8px;
 `
 const AddCarrinho = styled.button`
     width: 70%;
     padding: 8px;
     text-align: center;
-    color: white;
-    background: gray;
-    margin-bottom: 20px;
+    font-weight: 700;
+    color: #fFF;
+    background: #0E3A73;
+    margin: 16px 0;
     border: 0;
     outline: 0;
     border-radius: 8px;
-    box-shadow: 1px 1px 2px black;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
 `
 //COMPONENTE
 export default props => {
     
     return(
         <Card>
-            <Imagem onClick={props.handleCardClick} src={props.src} alt={props.alt}></Imagem>
-            <P onClick={props.handleCardClick}>{props.tituloItem} </P>
-            <P onClick={props.handleCardClick}>R$ {props.precoItem}</P>
-            <AddCarrinho onClick={props.handleButtonClick}>Adicionar ao Carrinho</AddCarrinho>
+            <Imagem id={props.id} onClick={props.handleCardClick} src={props.src} alt={props.alt}></Imagem>
+            <ItemTitulo id={props.id} onClick={props.handleCardClick}>{props.tituloItem} </ItemTitulo>
+            <ItemTexto id={props.id} onClick={props.handleCardClick}>R$ {props.precoItem}</ItemTexto>
+            <AddCarrinho onClick={props.handleButtonClick}>Comprar</AddCarrinho>
         </Card>
     );
 };
