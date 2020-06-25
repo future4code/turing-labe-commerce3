@@ -89,16 +89,18 @@ class App extends React.Component {
         texto: "Ataxito",
         imagem: "https://media.discordapp.net/attachments/725422422043656239/725424311917084752/ataxito.jpg?width=586&height=586",
         valor: 40,
-        quatidade: 0
+        quatidade: 1
       },
       {
-        id: Date.now(),
+        id: Date.now() + 1,
         texto: "Brenham",
         imagem: "https://media.discordapp.net/attachments/725422422043656239/725424316816031794/brenham.jpg?width=586&height=586",
         valor: 80,
-        quantidade: 0
+        quantidade: 1
       }
     ],
+
+    itensSelecionados: [],
     
     valorInputValorMinimo: "",
     valorInputValorMaximo: "",
@@ -175,6 +177,24 @@ class App extends React.Component {
     this.setState({abreCard: !this.state.abreCard})
   } 
 
+  //Adiciona item ao Carrinho
+
+  onClickSelecionaItem = id => {
+    const novaListaDoCarrinho = this.state.itens.filter((item) => {
+      if (id === item.id) {
+          const novoItem = {
+              ...item,
+              quantidade: 1
+          }
+          return novoItem
+      }
+    })
+
+    const novaListaSelecionados = [...this.state.itensSelecionados, novaListaDoCarrinho];
+
+    this.setState({itensSelecionados: novaListaSelecionados})    
+  } 
+
 
   render() {
 
@@ -206,7 +226,7 @@ class App extends React.Component {
     
     const renderCarrinho = () => {
       if (this.state.apertouBotaoCarrinho) {
-        return <Carrinho />
+        return <Carrinho lista={this.state.itensSelecionados} />
       } 
     }
     
@@ -262,23 +282,12 @@ class App extends React.Component {
             </ItensHeader>
             <ListItens>
               {itensFiltrados.map( (item, i, a) => {
-                return <Itens handleCardClick={() => this.onClickAbrirCard(item.id)} key={item.id + i} tituloItem={item.texto} precoItem={item.valor} src={item.imagem}/>
+                return <Itens handleButtonClick={() => this.onClickSelecionaItem(item.id)} handleCardClick={() => this.onClickAbrirCard(item.id)} key={item.id + i} tituloItem={item.texto} precoItem={item.valor} src={item.imagem}/>
               })}
             </ListItens>
           </ItensContainer>
-          {/* <div>
-            {itemAberto.map( (item, i, a) => {
-              return <Item texto={item.texto} imagem={item.imagem} valor={item.valor} />
-            })}
-          </div> */}
           {renderItemAberto()}
           {renderCarrinho()}
-          {/* <CarrinhoContainer>
-            <h2>Carrinho</h2>
-            <p>Valor total: R${valorTotal()} </p>
-            {}
-
-          </CarrinhoContainer> */}
           {cadastroNovoProduto()}
           <BtnContainer>
             <BtnCarrinho onClick={this.onClickShowCadastrar}>
