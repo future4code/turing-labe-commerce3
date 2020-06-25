@@ -32,15 +32,15 @@ const AddCarrinho = styled.button`
     box-shadow: 1px 1px 2px black;
 `
 //COMPONENTE
-export default class Itens extends React.Component {
-    render(){
-    return (
-        <Card>
-            <Imagem src={this.props.src} alt={this.props.alt}></Imagem>
-            <P>{this.props.tituloItem}</P>
-            <P>R$ {this.props.precoItem}</P>
-            <AddCarrinho onClick={this.props.adiciona}>Adicionar ao Carrinho</AddCarrinho>
+export default props => {
+    
+    return(
+        <Card onClick={props.handleCardClick}>
+            <Imagem onClick={props.handleCardClick} src={props.src} alt={props.alt}></Imagem>
+            <P onClick={props.handleCardClick}>{props.tituloItem} </P>
+            <P onClick={props.handleCardClick}>R$ {props.precoItem}</P>
+            <AddCarrinho onClick={props.handleButtonClick}>Adicionar ao Carrinho</AddCarrinho>
         </Card>
     );
-  };
 };
+
