@@ -13,6 +13,9 @@ const ContainerInput = styled.div`
     align-items: flex-start;
 `;
 
+const Pinput = styled.input`
+        width: 150px;
+`;
 
 export default props =>{
     const titulo = props.titulo || "titulo"
@@ -31,13 +34,13 @@ export default props =>{
     
     const Input = <ContainerInput>
                             <label>{titulo}</label>
-                            <input onChange={handleChange} type={InputType} min={minimo} max={max}/>
+                            <Pinput onChange={handleChange} type={InputType} min={minimo} max={max}/>
                         </ContainerInput>;
     
     const show =  !props.isInput ? <>{Select}</> : <>{Input}</> 
     return (
             <>
-            {show}
+                {show}
             </>
     );
 }
