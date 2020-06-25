@@ -28,7 +28,7 @@ const AddCarrinho = styled.button`
     margin-bottom: 20px;
     border: 0;
     outline: 0;
-    border-radius: 7px;
+    border-radius: 8px;
     box-shadow: 1px 1px 2px black;
 `
 //COMPONENTE
