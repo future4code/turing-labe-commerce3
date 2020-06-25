@@ -180,17 +180,13 @@ class App extends React.Component {
   //Adiciona item ao Carrinho
 
   onClickSelecionaItem = id => {
-    const novaListaDoCarrinho = this.state.itens.filter((item) => {
+    const novoItemSelecionado = this.state.itens.filter((item) => {
       if (id === item.id) {
-          const novoItem = {
-              ...item,
-              quantidade: 1
-          }
-          return novoItem
+          return item
       }
     })
 
-    const novaListaSelecionados = [...this.state.itensSelecionados, novaListaDoCarrinho];
+    const novaListaSelecionados = [...this.state.itensSelecionados, novoItemSelecionado];
 
     this.setState({itensSelecionados: novaListaSelecionados})    
   } 
