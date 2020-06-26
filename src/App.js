@@ -121,6 +121,7 @@ class App extends React.Component {
 
   state = {
     itens: [
+<<<<<<< HEAD
       {
         id: 1233,
         texto: "Camiseta manga comprida Take me",
@@ -191,6 +192,78 @@ class App extends React.Component {
         valor: 39,
         quantidade: 1
       }
+=======
+        {
+          id: 1233,
+          texto: "Camiseta manga comprida Take me",
+          imagem: "https://i.pinimg.com/736x/e0/5c/ca/e05cca96efc7ea4532785b03c156f2f1.jpg",
+          valor: 89,
+          quantidade: 1
+        },
+        {
+          id: 1234,
+          texto: "Camiseta Warning Ufo lover",
+          imagem: "https://i.ebayimg.com/images/g/NXkAAOSwX61ZLqqK/s-l300.jpg",
+          valor: 49,
+          quantidade: 1
+        },
+        {
+          id: 1235,
+          texto: "Camiseta I need more space",
+          imagem: "https://images-na.ssl-images-amazon.com/images/I/71DLm-1N5yL._UL1500_.jpg",
+          valor: 79,
+          quantidade: 1
+        },
+        {
+          id: 1236,
+          texto: "Camiseta Pluto never forget",
+          imagem: "https://printteestore.com/wp-content/uploads/2019/Image/636952023189511389/Vintage-Never-Forget-Pluto-Funny-Space-Graphic_Premium-T-shirt_True-Royal.JPEG",
+          valor: 79,
+          quantidade: 1
+        },
+        {
+          id: 1237,
+          texto: "Camiseta Gravity brings me down",
+          imagem: "https://i.rocdn.com/v2/30074984?w=1024&h=1024",
+          valor: 89,
+          quantidade: 1
+        },
+        {
+          id: 1238,
+          texto: "Camiseta manga comprida Take me",
+          imagem: "https://cdn.tees.design/uploads/2019/04/16093720/Get-Now-Alien-Reading-English-Teacher-Library-Space-Funny-T-shirt-Black-Long-Sleeve.png",
+          valor: 59,
+          quantidade: 1
+        },
+        {
+          id: 1239,
+          texto: "Aliens don't believe",
+          imagem: "https://images-na.ssl-images-amazon.com/images/I/71F7ZarihiL._AC_UL1500_.jpg",
+          valor: 59,
+          quantidade: 1
+        },
+        {
+          id: 1240,
+          texto: "Humans aren't real",
+          imagem: "https://ak1.ostkcdn.com/images/products/is/images/direct/271e39b7cf15e54bdac5e70a693279c36c812762/Humans-Aren%27t-Real-Alien-Men%27s-Funny-T-Shirt-Humorous-Tee-Cute-Graphic-Tshirt-Funny-Shirt.jpg",
+          valor: 49,
+          quantidade: 1
+        },
+        {
+          id: 1241,
+          texto: "Camiseta Slothstronaut",
+          imagem: "https://donefashion.com/wp-content/uploads/2019/09/Slothstronaut-Sloth-Astronaut-Funny-Space-Pun-Gift-Tshirts.jpg",
+          valor: 49,
+          quantidade: 1
+        },
+        {
+          id: 1242,
+          texto: "Camiseta You are here",
+          imagem: "https://cdn1.bigcommerce.com/server4100/deb25/products/156/images/436/you_are_here_space_geek_t_shirt__93336.1350679459.400.400.jpg?c=2",
+          valor: 39,
+          quantidade: 1
+        }
+>>>>>>> master
     ],
 
     itensSelecionados: [],
@@ -201,7 +274,9 @@ class App extends React.Component {
 
     apertouBotaoCarrinho: false,
     abreCard: false,
-    idItemClicado: ""
+    idItemClicado: "",
+
+    ordem: 0
   }
 
   componentDidUpdate() {
@@ -334,18 +409,32 @@ class App extends React.Component {
     }
   }
 
-  onChangeOrdena = event => {
-    this.state.itens.sort((a, b) => {
-      if ( event.target.value == 1 ) {
-        return parseFloat(a.valor) - parseFloat(b.valor);
-      } else if ( event.target.value == 2 ) {
-        return parseFloat(b.valor) - parseFloat(a.valor);
-      }
-    })
-    this.setState({ itens: this.state.itens });
+  onChangeOrdenaLista = event => {
+
+    let listaOrdenada = [];
+
+
+    if ( Number(event.target.value) === 1 ) {
+      listaOrdenada = [...this.state.itens];
+      listaOrdenada.sort ((a, b) => {
+        return a.valor - b.valor;
+      })
+    }
+    
+    if ( Number(event.target.value) === 2 ) {
+      listaOrdenada = [];
+      listaOrdenada = [...this.state.itens];
+
+      listaOrdenada.sort ((b, a) => {
+        return a.valor - b.valor;
+      })
+    }
+    
+    this.setState({ itens: listaOrdenada })
   }
 
   render() {
+
 
     let itensFiltrados = this.state.itens;
     
@@ -368,7 +457,7 @@ class App extends React.Component {
 
     const renderItemAberto = () => {
       const itemAberto = this.state.itens.find( item => item.id === this.state.idItemClicado);
-      return <Item comprar={() => this.onClickSelecionaItem(itemAberto.id)}fechaItem={this.onClickAbrirCard} key={itemAberto.id} texto={itemAberto.texto} imagem={itemAberto.imagem} valor={itemAberto.valor} />;
+      return <Item comprar={() => this.onClickSelecionaItem(itemAberto.id)} fechaItem={this.onClickAbrirCard} key={itemAberto.id} texto={itemAberto.texto} imagem={itemAberto.imagem} valor={itemAberto.valor} />;
     }
 
     return (
@@ -381,18 +470,17 @@ class App extends React.Component {
             <FiltroTitulo>Filtro</FiltroTitulo>
             <Filtro isInput="true" titulo="Valor Mínimo" type="number" min="0" handleChange={this.onChangeValorMinimo}/>
             <Filtro isInput="true" titulo="Valor Máximo" type="number" max="1000" handleChange={this.onChangeValorMaximo}/>
-            <Filtro isInput="true" titulo="Buscar produto"handleChange={this.onChangeValorBusca} />
-
+            <Filtro isInput="true" titulo="Buscar produto" handleChange={this.onChangeValorBusca} />
           </FiltroContainer>
           <ItensContainer>
             <TituloSecundario>Produtos</TituloSecundario>
             <ItensHeader>
               <p>Quantidade de de Produtos: {itensFiltrados.length} </p>
-              <Filtro handleSelectChange={this.onChangeOrdena} options={["Ordenar", "Ordem crescente", "Ordem decrescente"]}/>
+              <Filtro handleSelectChange={this.onChangeOrdenaLista} options={["Ordem", "Ordem crescente", "Ordem decrescente"]}/>
             </ItensHeader>
             <ListItens>
               {itensFiltrados.map( (item, i, a) => {
-                return <Itens handleButtonClick={() => this.onClickSelecionaItem(item.id)} handleCardClick={() => this.onClickAbrirCard(item.id)} key={item.id + i} tituloItem={item.texto} precoItem={item.valor} src={item.imagem}/>
+                return <Itens handleButtonClick={() => this.onClickSelecionaItem(item.id)} handleCardClick={() => this.onClickAbrirCard(item.id)} key={item.id} tituloItem={item.texto} precoItem={item.valor} src={item.imagem}/>
               })}
             </ListItens>
           </ItensContainer>
