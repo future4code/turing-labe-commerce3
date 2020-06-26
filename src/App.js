@@ -135,9 +135,9 @@ class App extends React.Component {
 
     itensSelecionados: [],
     
-    valorInputValorMinimo: "",
-    valorInputValorMaximo: "",
-    valorInputValorBusca: "",
+    inputValorMinimo: "",
+    inputValorMaximo: "",
+    inputBuscar: "",
 
     apertouBotaoCarrinho: false,
     abreCard: false,
@@ -153,15 +153,15 @@ class App extends React.Component {
   };
 
   onChangeValorMinimo = event => {
-    this.setState({valorInputValorMinimo: event.target.value})
+    this.setState({inputValorMinimo: event.target.value})
   }
 
   onChangeValorMaximo = event => {
-    this.setState({valorInputValorMaximo: event.target.value})
+    this.setState({inputValorMaximo: event.target.value})
   }
 
   onChangeValorBusca = event => {
-    this.setState({valorInputValorBusca: event.target.value})
+    this.setState({inputBuscar: event.target.value})
   }
 
   //Itens
@@ -185,7 +185,7 @@ class App extends React.Component {
           <h2>Carrinho</h2>
 
           {this.state.itensSelecionados.map( item => {
-            resultado += item.valor
+            resultado += (item.valor * item.quantidade)
             return <Carrinho key={item.id} item={item} apagarItem={this.onClickApagarItem}/>
           })}
 
@@ -283,21 +283,24 @@ class App extends React.Component {
 
   render() {
 
-    // ajustar filtros
-    const itensFiltrados = this.state.itens.filter( item => {
-      const texto = item.texto.toLowerCase();
-      if (this.state.valorInputValorMinimo !== "" && this.state.valorInputValorMaximo !== "" && this.state.valorInputValorBusca !== "" ) {
-        return item.valor >= this.state.valorInputValorMinimo && item.valor <= this.state.valorInputValorMaximo && texto.includes(this.state.valorInputValorBusca)
-      } else if (this.state.valorInputValorMinimo !== "") {
-        return item.valor >= this.state.valorInputValorMinimo 
-      } else if (this.state.valorInputValorMaximo !== "") {
-        return item.valor <= this.state.valorInputValorMaximo
-      } else if (this.state.valorInputValorBusca !== "") {
-        return texto.includes(this.state.valorInputValorBusca)
-      } else if (this.state.valorInputValorMinimo === "" && this.state.valorInputValorMaximo === "" && this.state.valorInputValorBusca === "" ) {
-        return item.texto;
-      }
-    });
+    let itensFiltrados = this.state.itens;
+    
+    if ( this.state.inputValorMinimo !== "" ) {
+      itensFiltrados = this.state.itens.filter( item => item.valor >= this.state.inputValorMinimo ?  item : null)
+    }
+    
+    if ( this.state.inputValorMaximo !== "" ) {
+      itensFiltrados = this.state.itens.filter( item => item.valor <= this.state.inputValorMaximo ?  item : null)
+    }
+    
+    if ( this.state.inputBuscar !== "" ) {
+      itensFiltrados = this.state.itens.filter( item => {
+        const texto = item.texto.toLocaleLowerCase();
+        if ( texto.includes(this.state.inputBuscar) ) {
+          return item
+        }
+      })
+    }
 
     const renderItemAberto = () => {
       const itemAberto = this.state.itens.find( item => item.id === this.state.idItemClicado);
