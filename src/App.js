@@ -93,28 +93,6 @@ const Icone = styled.img `
   height: 40px;
 `
 
-const InputCadastro = styled.input `
-  display: block;
-  width: 100%;
-  margin: 8px auto;
-  padding: 4px;
-  border-radius: 5px;
-  border: none;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
-`
-const BtnCadastro = styled.button`
-    padding: 8px;
-    text-align: center;
-    font-weight: 700;
-    color: #fFF;
-    background: #0E3A73;
-    margin: 16px 0;
-    border: 0;
-    outline: 0;
-    border-radius: 8px;
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
-`
-
 class App extends React.Component {
 
   state = {
@@ -162,11 +140,6 @@ class App extends React.Component {
     valorInputValorMaximo: "",
     valorInputValorBusca: "",
 
-    valorInputNovoTexto: "",
-    valorInputNovoImg: "",
-    valorInputNovoValor: "",
-
-    showCadastrar: false,
     apertouBotaoCarrinho: false,
     abreCard: false,
     idItemClicado: ""
@@ -194,40 +167,10 @@ class App extends React.Component {
   }
 
   //Itens
-  
   //Abre Card
   onClickAbrirCard = id => {
     this.setState({abreCard: !this.state.abreCard})  
     this.setState({idItemClicado: id})  
-  } 
-
-  //funcao adiciona item
-  onClickShowCadastrar = () => {
-    this.setState({showCadastrar: !this.state.showCadastrar});
-  }
-
-  onChangeInputNovoTexto = event => {
-    this.setState({valorInputNovoTexto: event.target.value})
-  }
-
-  onChangeInputNovoImagem = event => {
-    this.setState({valorInputNovoImg: event.target.value})
-  }
-
-  onChangeInputNovoValor = event => {
-    this.setState({valorInputNovoValor: event.target.value})
-  }
-
-  onClickCadastraNovoItem = () => {
-    const novoItem = {
-      id: Date.now(),
-      texto: this.state.valorInputNovoTexto,
-      imagem: this.state.valorInputNovoImg,
-      valor: this.state.valorInputNovoValor
-    }
-
-    const novalistaItens = [...this.state.itens, novoItem];
-    this.setState({ itens: novalistaItens, id:"", texto:"", imagem:"", valor:"", valorInputNovoTexto:"", valorInputNovoImg:"", valorInputNovoValor:"" })
   }
 
   //Abre Carrinho
@@ -357,22 +300,6 @@ class App extends React.Component {
       }
     }
 
-    const cadastroNovoProduto = () => {
-      if (this.state.showCadastrar) {
-        return (
-          <CadastrarContainer>
-            <div>
-              <h2>Acrescentar novo item</h2>
-              <InputCadastro value={this.state.valorInputNovoTexto} placeholder="produto" onChange={this.onChangeInputNovoTexto}></InputCadastro>
-              <InputCadastro value={this.state.valorInputNovoImg} placeholder="link da imagem do produto" onChange={this.onChangeInputNovoImagem}></InputCadastro>
-              <InputCadastro value={this.state.valorInputNovoValor} placeholder="valor do produto" type="number" onChange={this.onChangeInputNovoValor}></InputCadastro>
-              <BtnCadastro onClick={this.onClickCadastraNovoItem}>Cadastrar</BtnCadastro>
-            </div>
-          </CadastrarContainer>
-        )
-      }
-    }
-
     return (
       <Home>
         <Header>
@@ -400,7 +327,6 @@ class App extends React.Component {
           </ItensContainer>
           {renderCarrinho}
           {renderItemAberto()}
-          {cadastroNovoProduto()}
           <BtnContainer>
             <BtnCarrinho onClick={this.onClickShowCadastrar}>
               <Icone src={iconeCadastrar} alt="icone carrinho"/>
