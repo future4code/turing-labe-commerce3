@@ -6,6 +6,7 @@ import ListaCarrinho from './components/ListaCarrinho';
 import Item from './components/Item';
 
 import iconeCarrinho from './images/carrinho.svg';
+import fundo from './images/fundo.png';
 
 const Home = styled.div `
   position: relative;
@@ -25,6 +26,11 @@ const Main = styled.div `
   align-items: stretch;
   justify-content: stretch;
   flex-wrap: wrap;
+`
+
+const TituloSecundario = styled.h2 `
+  font-size: 2rem;
+  margin: 16px 0;
 `
 
 const FiltroContainer = styled.div `
@@ -47,6 +53,10 @@ const ItensContainer = styled.div `
   flex: 3;
   padding: 16px;
   background-color: #f5f5f5;
+  background-image: url(${fundo});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom right;
 `
 
 const ListItens = styled.div `
@@ -92,6 +102,21 @@ const Icone = styled.img `
   height: 40px;
 `
 
+const Btn = styled.button `
+  display: block;
+  width: 70%;
+  padding: 8px;
+  text-align: center;
+  font-weight: 700;
+  color: #fFF;
+  background: #BF1304;
+  margin: 16px auto;
+  border: 0;
+  outline: 0;
+  border-radius: 8px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
+`
+
 class App extends React.Component {
 
   state = {
@@ -130,6 +155,41 @@ class App extends React.Component {
         imagem: "https://i.rocdn.com/v2/30074984?w=1024&h=1024",
         valor: 80,
         quantidade: 1
+      },
+      {
+        id: 1238,
+        texto: "Camiseta manga comprida Take me",
+        imagem: "https://ordertees.net/wp-content/uploads/2019/08/Vintage-Never-Forget-Pluto-T-Shirt-Funny-Space-Graphic-Tees.jpg",
+        valor: 100,
+        quantidade: 1
+      },
+      {
+        id: 1239,
+        texto: "Camiseta Warning Ufo lover",
+        imagem: "https://i.ebayimg.com/images/g/NXkAAOSwX61ZLqqK/s-l300.jpg",
+        valor: 80,
+        quantidade: 1
+      },
+      {
+        id: 1240,
+        texto: "Camiseta I need more space",
+        imagem: "https://images-na.ssl-images-amazon.com/images/I/71DLm-1N5yL._UL1500_.jpg",
+        valor: 80,
+        quantidade: 1
+      },
+      {
+        id: 1241,
+        texto: "Camiseta Pluto never forget",
+        imagem: "https://printteestore.com/wp-content/uploads/2019/Image/636952023189511389/Vintage-Never-Forget-Pluto-Funny-Space-Graphic_Premium-T-shirt_True-Royal.JPEG",
+        valor: 80,
+        quantidade: 1
+      },
+      {
+        id: 1242,
+        texto: "Camiseta Gravity brings me down",
+        imagem: "https://i.rocdn.com/v2/30074984?w=1024&h=1024",
+        valor: 80,
+        quantidade: 1
       }
     ],
 
@@ -144,13 +204,13 @@ class App extends React.Component {
     idItemClicado: ""
   }
 
-  // componentDidUpdate() {
-  //   localStorage.setItem("itens", JSON.stringify(this.state.itensSelecionados))
-  // };
+  componentDidUpdate() {
+    localStorage.setItem("itens", JSON.stringify(this.state.itensSelecionados))
+  };
 
-  // componentDidMount() {
-  //   localStorage.getItem("itens") && this.setState({ itensSelecionados: JSON.parse(localStorage.getItem("itens")) });
-  // };
+  componentDidMount() {
+    localStorage.getItem("itens") && this.setState({ itensSelecionados: JSON.parse(localStorage.getItem("itens")) });
+  };
 
   onChangeValorMinimo = event => {
     this.setState({inputValorMinimo: event.target.value})
@@ -185,7 +245,7 @@ class App extends React.Component {
 
     return (
         <ContainerCarrinho>
-          <h2>Carrinho</h2>
+          <TituloSecundario>Carrinho</TituloSecundario>
 
           {this.state.itensSelecionados.map( item => {
             if ( item.quantidade > 0 ) {
@@ -195,6 +255,7 @@ class App extends React.Component {
           })}
 
           <p><strong>R$ {resultado}</strong></p>
+          <Btn onClick={this.onClickLimpaCarrinho}>Limpar carrinho</Btn>
         </ContainerCarrinho>
     )
   }
@@ -267,6 +328,12 @@ class App extends React.Component {
 
   }
   
+  onClickLimpaCarrinho = () => {
+    if( window.confirm("Você tem certeza de que deseja cancelar todas as compras?")) {
+      this.setState({ itensSelecionados: [] })
+    }
+  }
+
   onChangeOrdena = event => {
     this.state.itens.sort((a, b) => {
       if ( event.target.value == 1 ) {
@@ -318,7 +385,7 @@ class App extends React.Component {
 
           </FiltroContainer>
           <ItensContainer>
-            <h2>Produtos</h2>
+            <TituloSecundario>Produtos</TituloSecundario>
             <ItensHeader>
               <p>Quantidade de de Produtos: {itensFiltrados.length} </p>
               <Filtro handleSelectChange={this.onChangeOrdena} options={["Ordenar", "Ordem crescente", "Ordem decrescente"]}/>

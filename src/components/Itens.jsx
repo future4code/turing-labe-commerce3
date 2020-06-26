@@ -6,12 +6,22 @@ const Card = styled.div`
     border-radius: 20px;
     padding: 16px;
     margin: 16px;
-    min-width: 150px;
-    max-width: 300px;
-    flex: 1;
+    width: calc(100%/5 - 64px);
     background: white;
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
     text-align: center;
+
+    @media screen and (max-width: 400px) {
+        width: 100%;
+    }
+
+    @media screen and (min-width: 401px) and (max-width: 800px) {
+        width: calc(100%/3 - 64px);
+    }
+
+    @media screen and (min-width: 801px) and (max-width: 1280px) {
+        width: calc(100%/4 - 64px);
+    }
 `
 const Imagem = styled.img`
     width: 100%;
