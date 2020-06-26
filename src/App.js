@@ -124,71 +124,71 @@ class App extends React.Component {
       {
         id: 1233,
         texto: "Camiseta manga comprida Take me",
-        imagem: "https://ordertees.net/wp-content/uploads/2019/08/Vintage-Never-Forget-Pluto-T-Shirt-Funny-Space-Graphic-Tees.jpg",
-        valor: 100,
+        imagem: "https://i.pinimg.com/736x/e0/5c/ca/e05cca96efc7ea4532785b03c156f2f1.jpg",
+        valor: 89,
         quantidade: 1
       },
       {
         id: 1234,
         texto: "Camiseta Warning Ufo lover",
         imagem: "https://i.ebayimg.com/images/g/NXkAAOSwX61ZLqqK/s-l300.jpg",
-        valor: 80,
+        valor: 49,
         quantidade: 1
       },
       {
         id: 1235,
         texto: "Camiseta I need more space",
         imagem: "https://images-na.ssl-images-amazon.com/images/I/71DLm-1N5yL._UL1500_.jpg",
-        valor: 80,
+        valor: 79,
         quantidade: 1
       },
       {
         id: 1236,
         texto: "Camiseta Pluto never forget",
         imagem: "https://printteestore.com/wp-content/uploads/2019/Image/636952023189511389/Vintage-Never-Forget-Pluto-Funny-Space-Graphic_Premium-T-shirt_True-Royal.JPEG",
-        valor: 80,
+        valor: 79,
         quantidade: 1
       },
       {
         id: 1237,
         texto: "Camiseta Gravity brings me down",
         imagem: "https://i.rocdn.com/v2/30074984?w=1024&h=1024",
-        valor: 80,
+        valor: 89,
         quantidade: 1
       },
       {
         id: 1238,
         texto: "Camiseta manga comprida Take me",
-        imagem: "https://ordertees.net/wp-content/uploads/2019/08/Vintage-Never-Forget-Pluto-T-Shirt-Funny-Space-Graphic-Tees.jpg",
-        valor: 100,
+        imagem: "https://cdn.tees.design/uploads/2019/04/16093720/Get-Now-Alien-Reading-English-Teacher-Library-Space-Funny-T-shirt-Black-Long-Sleeve.png",
+        valor: 59,
         quantidade: 1
       },
       {
         id: 1239,
-        texto: "Camiseta Warning Ufo lover",
-        imagem: "https://i.ebayimg.com/images/g/NXkAAOSwX61ZLqqK/s-l300.jpg",
-        valor: 80,
+        texto: "Aliens don't believe",
+        imagem: "https://images-na.ssl-images-amazon.com/images/I/71F7ZarihiL._AC_UL1500_.jpg",
+        valor: 59,
         quantidade: 1
       },
       {
         id: 1240,
-        texto: "Camiseta I need more space",
-        imagem: "https://images-na.ssl-images-amazon.com/images/I/71DLm-1N5yL._UL1500_.jpg",
-        valor: 80,
+        texto: "Humans aren't real",
+        imagem: "https://ak1.ostkcdn.com/images/products/is/images/direct/271e39b7cf15e54bdac5e70a693279c36c812762/Humans-Aren%27t-Real-Alien-Men%27s-Funny-T-Shirt-Humorous-Tee-Cute-Graphic-Tshirt-Funny-Shirt.jpg",
+        valor: 49,
         quantidade: 1
       },
       {
         id: 1241,
-        texto: "Camiseta Pluto never forget",
-        imagem: "https://printteestore.com/wp-content/uploads/2019/Image/636952023189511389/Vintage-Never-Forget-Pluto-Funny-Space-Graphic_Premium-T-shirt_True-Royal.JPEG",
-        valor: 80,
+        texto: "Camiseta Slothstronaut",
+        imagem: "https://donefashion.com/wp-content/uploads/2019/09/Slothstronaut-Sloth-Astronaut-Funny-Space-Pun-Gift-Tshirts.jpg",
+        valor: 49,
         quantidade: 1
       },
       {
         id: 1242,
-        texto: "Camiseta Gravity brings me down",
-        imagem: "https://i.rocdn.com/v2/30074984?w=1024&h=1024",
-        valor: 80,
+        texto: "Camiseta You are here",
+        imagem: "https://cdn1.bigcommerce.com/server4100/deb25/products/156/images/436/you_are_here_space_geek_t_shirt__93336.1350679459.400.400.jpg?c=2",
+        valor: 39,
         quantidade: 1
       }
     ],
