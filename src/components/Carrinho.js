@@ -26,22 +26,15 @@ const Icone = styled.img `
   width: 20px;
 `
 
-let resultadoTotal = 0
-
 class Carrinho extends React.Component {
 
     state = {
-        resultado: 0,
         item: this.props.item || [],
     }
 
     componentDidMount () {   
 
-        // this.state.itens.forEach ((item) => {
-        // resultadoTotal += item.quantidade * item.valor        
-        // })
 
-        // this.setState({resultado: resultadoTotal})
     }
     
     render() {
@@ -54,19 +47,7 @@ class Carrinho extends React.Component {
                     <Icone id={this.state.item.id} onClick={this.props.apagarItem} src={iconeExcluir} alt="icone excluir"/>
                 </BotaoExcluir>
             </ListaCarrinho>
-
-
-            // <ContainerCarrinho>
-            //     <h2>Carrinho</h2>
-            //     <ul>
-            //         {this.state.itens.map ((item) =>   {
-            //             return  (
-            //                 <ListaCarrinho key={this.props.item.id}>{this.props.item.quantidade}x {this.props.item.texto} <BotaoExcluir id={this.props.item.id} onClick={this.props.apagarItem}><Icone id={this.props.item.id} onClick={this.props.apagarItem} src={iconeExcluir} alt="icone excluir"/></BotaoExcluir></ListaCarrinho>
-            //             )
-            //         })} 
-            //     </ul>
-            //     <p>Total <b>R$ {this.state.resultado}</b></p>
-            // </ContainerCarrinho>          
+        
         )
 
       }
