@@ -6,7 +6,6 @@ import Carrinho from './components/Carrinho';
 import Item from './components/Item';
 
 import iconeCarrinho from './images/carrinho.svg';
-import iconeCadastrar from './images/add.svg';
 
 const Home = styled.div `
   position: relative;
@@ -145,15 +144,13 @@ class App extends React.Component {
     idItemClicado: ""
   }
 
-  // componentDidUpdate() {
-  //   localStorage.setItem("itens", JSON.stringify(this.state.itensSelecionados))
-  // };
+  componentDidUpdate() {
+    localStorage.setItem("itens", JSON.stringify(this.state.itensSelecionados))
+  };
 
-  // componentDidMount() {
-
-  //   localStorage.getItem("itens") && this.setState({ itensSelecionados: JSON.parse(localStorage.getItem("itens")) });
-
-  // };
+  componentDidMount() {
+    localStorage.getItem("itens") && this.setState({ itensSelecionados: JSON.parse(localStorage.getItem("itens")) });
+  };
 
   onChangeValorMinimo = event => {
     this.setState({valorInputValorMinimo: event.target.value})
@@ -174,28 +171,62 @@ class App extends React.Component {
     this.setState({idItemClicado: id})  
   }
 
-  //Abre Carrinho
+  //Carrinho
   onClickAbrirCarrinho = () => {
     this.setState({apertouBotaoCarrinho: !this.state.apertouBotaoCarrinho})
   } 
 
-  //Adiciona item ao Carrinho
+  renderCarrinho =  () => {
+
+    let resultado = 0;
+    
+    return (
+        <ContainerCarrinho>
+          <h2>Carrinho</h2>
+
+          {this.state.itensSelecionados.map( item => {
+            resultado += item.valor
+            return <Carrinho key={item.id} item={item} apagarItem={this.onClickApagarItem}/>
+          })}
+
+          <p><strong>R$ {resultado}</strong></p>
+        </ContainerCarrinho>
+    )
+  }
+
   onClickSelecionaItem = id => {
 
-    const itemSelecionado = this.state.itens.filter((item) => {
+    const itemSelecionado = this.state.itens.find( item => {
       return item.id === id
     })
 
+    const posicaoDoItemNoCarrinho = this.state.itensSelecionados.findIndex( item => {
+      return item.id === id
+    });
+
+    const existeNoCarrinho = posicaoDoItemNoCarrinho > -1
+
+    let novosItensSelecionados = [...this.state.itensSelecionados]
+
+    if ( existeNoCarrinho ) {
+      novosItensSelecionados = novosItensSelecionados.map( item => {
+        if ( item.id === id ) {
+          return {
+            ...item,
+            quantidade: item.quantidade + 1
+          }
+        }
+        
+        return item
+      })
+
+    } else {
+      novosItensSelecionados.push(itemSelecionado)
+    }
+
+    this.forceUpdate(); // Soter vai ver
     
-    itemSelecionado.forEach( item => {
-      if ( this.state.itensSelecionados.includes(item) ) {
-        item.quantidade += 1
-      } else {
-        this.setState({ itensSelecionados: [...this.state.itensSelecionados, item] })
-      }
-    })
-      
-    this.forceUpdate();
+    this.setState({ itensSelecionados: novosItensSelecionados })
 
     if (!this.state.apertouBotaoCarrinho) {
       this.setState({ apertouBotaoCarrinho: !this.state.apertouBotaoCarrinho })
@@ -234,7 +265,7 @@ class App extends React.Component {
       }
       
     })
-    
+ 
     this.setState({ itensSelecionados: listaFiltrada })
 
   }
@@ -252,6 +283,7 @@ class App extends React.Component {
 
   render() {
 
+    // ajustar filtros
     const itensFiltrados = this.state.itens.filter( item => {
       const texto = item.texto.toLowerCase();
       if (this.state.valorInputValorMinimo !== "" && this.state.valorInputValorMaximo !== "" && this.state.valorInputValorBusca !== "" ) {
@@ -267,58 +299,9 @@ class App extends React.Component {
       }
     });
 
-    const totalItens = () => {
-      let total = 0;
-      itensFiltrados.forEach((item, i) => {
-        total = 1;
-        total += i;
-      })
-
-      return total;
-
-    };
-
-    // const renderCarrinho =  (this.state.apertouBotaoCarrinho) ? constroiCarrinho() : null;
-    const renderCarrinho =  () => {
-
-      let resultado = 0;
-
-      if (this.state.apertouBotaoCarrinho) {
-        return (
-          <ContainerCarrinho>
-            <h2>Carrinho</h2>
-            {this.state.itensSelecionados.map( item => {
-              resultado += item.valor
-              return <Carrinho key={item.id} item={item} apagarItem={this.onClickApagarItem}/>
-            })}
-            <p><strong>R$ {resultado}</strong></p>
-          </ContainerCarrinho>
-        )
-        
-        // const constroiCarrinho = this.state.itensSelecionados.map( (item, i, a) => {
-        //   return <ContainerCarrinho></ContainerCarrinho>
-          
-        //   // <Carrinho key={item.id} quantidade={item.quantidade} texto={item.texto} item={item.id} id={item.id} apagarItem={this.onClickApagarItem}/>
-        // })
-        // return constroiCarrinho;
-      } else {
-        return null;
-      }
-    }
-
-    const itemAberto = this.state.itens.filter( item => {
-      if(item.id === this.state.idItemClicado) {
-        return item.texto
-      }
-    });
-
     const renderItemAberto = () => {
-      if(this.state.abreCard) {
-        const item = itemAberto.map( (item, i, a) => {
-          return <Item fechaItem={this.onClickAbrirCard} key={item.id} texto={item.texto} imagem={item.imagem} valor={item.valor} />
-        })
-        return item;
-      }
+      const itemAberto = this.state.itens.find( item => item.id === this.state.idItemClicado);
+      return <Item fechaItem={this.onClickAbrirCard} key={itemAberto.id} texto={itemAberto.texto} imagem={itemAberto.imagem} valor={itemAberto.valor} />;
     }
 
     return (
@@ -337,7 +320,7 @@ class App extends React.Component {
           <ItensContainer>
             <h2>Produtos</h2>
             <ItensHeader>
-              <p>Quantidade de de Produtos: {totalItens()} </p>
+              <p>Quantidade de de Produtos: {itensFiltrados.length} </p>
               <Filtro handleSelectChange={this.onChangeOrdena} options={["Ordenar", "Ordem crescente", "Ordem decrescente"]}/>
             </ItensHeader>
             <ListItens>
@@ -346,8 +329,8 @@ class App extends React.Component {
               })}
             </ListItens>
           </ItensContainer>
-          {renderCarrinho()}
-          {renderItemAberto()}
+          {this.state.apertouBotaoCarrinho && this.renderCarrinho()}
+          {this.state.abreCard && renderItemAberto()}
           <BtnContainer>
             <BtnCarrinho onClick={this.onClickAbrirCarrinho} >
               <Icone src={iconeCarrinho} alt="icone carrinho"/>
