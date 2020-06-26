@@ -3,7 +3,7 @@ import styled from "styled-components"
 import iconeExcluir from '../images/excluir.svg'
 
 
-const ListaCarrinho = styled.li`
+const ItensCarrinho = styled.li`
     width: 100%;
     list-style: none;
     border-top: 1px dashed black;
@@ -26,31 +26,18 @@ const Icone = styled.img `
   width: 20px;
 `
 
-class Carrinho extends React.Component {
+class ListaCarrinho extends React.Component {
 
-    state = {
-        item: this.props.item || [],
-    }
-
-    componentDidMount () {   
-
-
-    }
-    
     render() {
-
         return ( 
-
-            <ListaCarrinho key={this.state.item.id}>
-                {this.state.item.quantidade}x {this.state.item.texto}
-                <BotaoExcluir id={this.state.item.id} onClick={this.state.item.apagarItem}>
-                    <Icone id={this.state.item.id} onClick={this.props.apagarItem} src={iconeExcluir} alt="icone excluir"/>
+           <ItensCarrinho key={this.props.id}>
+                {this.props.quantidade}x {this.props.texto}
+                <BotaoExcluir id={this.props.id} onClick={this.props.apagarItem}>
+                    <Icone id={this.props.id} onClick={this.props.apagarItem} src={iconeExcluir} alt="icone excluir"/>
                 </BotaoExcluir>
-            </ListaCarrinho>
-        
+            </ItensCarrinho>
         )
-
       }
 }
 
-export default Carrinho
+export default ListaCarrinho

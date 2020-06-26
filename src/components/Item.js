@@ -36,6 +36,7 @@ const ItemImg = styled.img `
 
 const ItemValor = styled.p `
     font-weight: 700;
+    text-align: center;
 `
 
 const FechaItem = styled.p `
@@ -46,6 +47,21 @@ const FechaItem = styled.p `
     right: 16px;
     top: 16px;
     cursor: pointer;
+`
+
+const AddCarrinho = styled.button`
+    display: block;
+    width: 70%;
+    padding: 8px;
+    text-align: center;
+    font-weight: 700;
+    color: #fFF;
+    background: #0E3A73;
+    margin: 16px auto;
+    border: 0;
+    outline: 0;
+    border-radius: 8px;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
 `
 
 class Item extends React.Component {
@@ -59,6 +75,7 @@ class Item extends React.Component {
                     <ItemTitulo>{this.props.texto}</ItemTitulo>
                     <ItemImg src={this.props.imagem} alt={this.props.texto}/>
                     <ItemValor>R$ {this.props.valor}</ItemValor>
+                    <AddCarrinho onClick={this.props.comprar}>Comprar</AddCarrinho>
                 </ItemContent>
             </ItemContainer>          
         )
