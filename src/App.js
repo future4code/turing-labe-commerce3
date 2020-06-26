@@ -72,7 +72,7 @@ const CadastrarContainer = styled.div `
 `
 
 const BtnContainer = styled.div `
-  position: absolute;
+  position: fixed;
   bottom: 16px;
   right: 16px;
 `
@@ -93,12 +93,34 @@ const Icone = styled.img `
   height: 40px;
 `
 
+const InputCadastro = styled.input `
+  display: block;
+  width: 100%;
+  margin: 8px auto;
+  padding: 4px;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+`
+const BtnCadastro = styled.button`
+    padding: 8px;
+    text-align: center;
+    font-weight: 700;
+    color: #fFF;
+    background: #0E3A73;
+    margin: 16px 0;
+    border: 0;
+    outline: 0;
+    border-radius: 8px;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
+`
+
 class App extends React.Component {
 
   state = {
     itens: [
       {
-        id: 123,
+        id: 1233,
         texto: "Camiseta manga comprida Take me",
         imagem: "https://ordertees.net/wp-content/uploads/2019/08/Vintage-Never-Forget-Pluto-T-Shirt-Funny-Space-Graphic-Tees.jpg",
         valor: 100,
@@ -126,9 +148,9 @@ class App extends React.Component {
         quantidade: 1
       },
       {
-        id: 1236,
-        texto: "Camiseta Pluto never forget",
-        imagem: "https://printteestore.com/wp-content/uploads/2019/Image/636952023189511389/Vintage-Never-Forget-Pluto-Funny-Space-Graphic_Premium-T-shirt_True-Royal.JPEG",
+        id: 1237,
+        texto: "Camiseta Gravity brings me down",
+        imagem: "https://i.rocdn.com/v2/30074984?w=1024&h=1024",
         valor: 80,
         quantidade: 1
       }
@@ -151,12 +173,12 @@ class App extends React.Component {
   }
 
   componentDidUpdate() {
-    localStorage.setItem("tarefas", JSON.stringify(this.state.tarefas))
+    localStorage.setItem("itens", JSON.stringify(this.state.itens))
   };
 
   componentDidMount() {
-    const tarefasString = localStorage.getItem("tarefa");
-    const tarefasObjeto = JSON.parse(tarefasString);
+    const itensString = localStorage.getItem("itens");
+    const itensObjeto = JSON.parse(itensString);
   };
 
   onChangeValorMinimo = event => {
@@ -216,12 +238,12 @@ class App extends React.Component {
 
   //Adiciona item ao Carrinho
 
+
   onClickSelecionaItem = id => {
 
     const itemSelecionado = this.state.itens.filter((item) => {
       return item.id === id
     })
-
     itemSelecionado.forEach( item => {
       if ( this.state.itensSelecionados.includes(item) ) {
         item.quantidade += 1
@@ -230,17 +252,42 @@ class App extends React.Component {
       }
     })
 
+
+    // const itemSelecionado = this.state.itens.find( item => {
+    //   return item.id === id
+    // })
+
+    // let novosItensSelecionados = [...this.state.itensSelecionados]
+    
+    // console.log(!novosItensSelecionados.includes(itemSelecionado))
+    
+    // if (!novosItensSelecionados.includes(itemSelecionado)) {
+    //   novosItensSelecionados.push(itemSelecionado)
+    // } else {
+    //   novosItensSelecionados = novosItensSelecionados.map((item) => {
+    //     if (item.id === id) {
+    //       return {...item, quantidade: item.quantidade + 1}
+    //     }
+    //     return item
+    //   })
+    // }
+    
+    // this.setState({ itensSelecionados: novosItensSelecionados })
+    
+    // console.log(this.state.itensSelecionados)
+
     if (!this.state.apertouBotaoCarrinho) {
-      this.setState({apertouBotaoCarrinho: !this.state.apertouBotaoCarrinho})
+      this.setState({ apertouBotaoCarrinho: !this.state.apertouBotaoCarrinho })
     }
+
   } 
 
   onClickApagarItem = event => {
 
-    const novaLista = this.state.itensSelecionados.filter( item => {
+    const novaLista = this.state.itensSelecionados.filter (item => {
       return item.id !== Number(event.target.id)
     })
-
+    
     this.setState({ itensSelecionados: novaLista })
 
   }
@@ -295,7 +342,7 @@ class App extends React.Component {
     const renderItemAberto = () => {
       if(this.state.abreCard) {
         const item = itemAberto.map( (item, i, a) => {
-          return <Item key={item.id} texto={item.texto} imagem={item.imagem} valor={item.valor} />
+          return <Item fechaItem={this.onClickAbrirCard} key={item.id} texto={item.texto} imagem={item.imagem} valor={item.valor} />
         })
         return item;
       }
@@ -307,10 +354,10 @@ class App extends React.Component {
           <CadastrarContainer>
             <div>
               <h2>Acrescentar novo item</h2>
-              <input value={this.state.valorInputNovoTexto} placeholder="produto" onChange={this.onChangeInputNovoTexto}></input>
-              <input value={this.state.valorInputNovoImg} placeholder="link da imagem do produto" onChange={this.onChangeInputNovoImagem}></input>
-              <input value={this.state.valorInputNovoValor} placeholder="valor do produto" type="number" onChange={this.onChangeInputNovoValor}></input>
-              <button onClick={this.onClickCadastraNovoItem}>Cadastrar</button>
+              <InputCadastro value={this.state.valorInputNovoTexto} placeholder="produto" onChange={this.onChangeInputNovoTexto}></InputCadastro>
+              <InputCadastro value={this.state.valorInputNovoImg} placeholder="link da imagem do produto" onChange={this.onChangeInputNovoImagem}></InputCadastro>
+              <InputCadastro value={this.state.valorInputNovoValor} placeholder="valor do produto" type="number" onChange={this.onChangeInputNovoValor}></InputCadastro>
+              <BtnCadastro onClick={this.onClickCadastraNovoItem}>Cadastrar</BtnCadastro>
             </div>
           </CadastrarContainer>
         )
@@ -342,8 +389,8 @@ class App extends React.Component {
               })}
             </ListItens>
           </ItensContainer>
-          {renderItemAberto()}
           {renderCarrinho}
+          {renderItemAberto()}
           {cadastroNovoProduto()}
           <BtnContainer>
             <BtnCarrinho onClick={this.onClickShowCadastrar}>

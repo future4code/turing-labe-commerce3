@@ -1,6 +1,5 @@
 import React from "react"
 import styled from "styled-components"
-import AbreCarrinho from "./AbreCarrinho"
 
 const ContainerCarrinho = styled.div`
     border: 1px solid black;
@@ -9,13 +8,12 @@ const ContainerCarrinho = styled.div`
     padding: 16px;
 `
 let resultadoTotal = 0
-let atualizaLista = "";
 
 class Carrinho extends React.Component {
 
     state = {
         resultado: 0,
-        itens: this.props.lista || []
+        itens: this.props.lista || [],
     }
 
     componentDidMount () {   
@@ -26,13 +24,10 @@ class Carrinho extends React.Component {
 
         this.setState({resultado: resultadoTotal})
 
-        this.setState({itens: this.state.itens})
-        
     }
-    
+
     render() {
   
-        console.log("oi")
     
         return (            
             <ContainerCarrinho>
@@ -40,7 +35,7 @@ class Carrinho extends React.Component {
                 <ul>
                     {this.state.itens.map ((item) =>   {
                         return  (
-                            <li key={item.id}>{item.quantidade}x {item.texto} <button id={item.id} onClick={this.props.apagarItem}>Apagar</button></li>
+                            <li key={item.id}>{item.quantidade}x {item.texto} <button id={item.id} quantidade={item.quantidade} onClick={this.props.apagarItem}>Apagar</button></li>
                         )
                     })} 
                 </ul>
