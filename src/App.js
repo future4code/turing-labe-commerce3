@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Filtro from './components/Filtro';
 import Itens from './components/Itens';
-import Carrinho from './components/Carrinho';
+import ListaCarrinho from './components/ListaCarrinho';
 import Item from './components/Item';
 
 import iconeCarrinho from './images/carrinho.svg';
@@ -52,7 +52,7 @@ const ItensContainer = styled.div `
 const ListItens = styled.div `
   margin: auto;
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
   justify-content: flex-start;
   flex-wrap: wrap;
 `
@@ -144,13 +144,13 @@ class App extends React.Component {
     idItemClicado: ""
   }
 
-  componentDidUpdate() {
-    localStorage.setItem("itens", JSON.stringify(this.state.itensSelecionados))
-  };
+  // componentDidUpdate() {
+  //   localStorage.setItem("itens", JSON.stringify(this.state.itensSelecionados))
+  // };
 
-  componentDidMount() {
-    localStorage.getItem("itens") && this.setState({ itensSelecionados: JSON.parse(localStorage.getItem("itens")) });
-  };
+  // componentDidMount() {
+  //   localStorage.getItem("itens") && this.setState({ itensSelecionados: JSON.parse(localStorage.getItem("itens")) });
+  // };
 
   onChangeValorMinimo = event => {
     this.setState({inputValorMinimo: event.target.value})
@@ -164,14 +164,11 @@ class App extends React.Component {
     this.setState({inputBuscar: event.target.value})
   }
 
-  //Itens
-  //Abre Card
   onClickAbrirCard = id => {
     this.setState({abreCard: !this.state.abreCard})  
     this.setState({idItemClicado: id})  
   }
 
-  //Carrinho
   onClickAbrirCarrinho = () => {
     this.setState({apertouBotaoCarrinho: !this.state.apertouBotaoCarrinho})
   } 
@@ -180,13 +177,23 @@ class App extends React.Component {
 
     let resultado = 0;
     
+    resultado = this.state.itensSelecionados.reduce( (total, item) => {
+      if( item && item.valor ) {
+        return total + (item.valor * item.quantidade)
+      } else {
+        return resultado
+      }
+    }, 0)
+
     return (
         <ContainerCarrinho>
           <h2>Carrinho</h2>
 
           {this.state.itensSelecionados.map( item => {
-            resultado += (item.valor * item.quantidade)
-            return <Carrinho key={item.id} item={item} apagarItem={this.onClickApagarItem}/>
+            if ( item.quantidade > 0 ) {
+              return <ListaCarrinho key={item.id} id={item.id} texto={item.texto} quantidade={item.quantidade} apagarItem={this.onClickApagarItem}/>
+            }
+
           })}
 
           <p><strong>R$ {resultado}</strong></p>
@@ -224,49 +231,41 @@ class App extends React.Component {
       novosItensSelecionados.push(itemSelecionado)
     }
 
-    this.forceUpdate(); // Soter vai ver
-    
     this.setState({ itensSelecionados: novosItensSelecionados })
 
     if (!this.state.apertouBotaoCarrinho) {
       this.setState({ apertouBotaoCarrinho: !this.state.apertouBotaoCarrinho })
     }
-
   } 
 
   onClickApagarItem = event => {
 
-  let listaFiltrada;
-  
-  this.state.itensSelecionados.forEach((item, i, a) => {
+    const id = Number(event.target.id)
 
+    let novosItensSelecionados = [...this.state.itensSelecionados]
+
+    novosItensSelecionados = novosItensSelecionados.map( item => {
       if ( item.quantidade > 1 ) {
-
-        const novoItem = {
-          ...item,
-          quantidade: item.quantidade - 1
+        if ( item.id === id ) {
+          return {
+            ...item,
+            quantidade: item.quantidade - 1
+          }
         }
-
-        let novoArray = [...this.state.itensSelecionados]
-
-        novoArray.splice(i)
-
-        novoArray = [...novoArray, novoItem]
-
-        return listaFiltrada = novoArray;
-
-
+        return item
       } else {
-        const novaListaFiltrada = this.state.itensSelecionados.filter( itemNovo => {
-          return item.id !== Number(event.target.id)
-        })
-
-        return listaFiltrada = novaListaFiltrada;
+        if ( item.id === id ) {
+          return item.id !== id
+        }
+        return item
       }
-      
     })
- 
-    this.setState({ itensSelecionados: listaFiltrada })
+
+    this.setState({ itensSelecionados: novosItensSelecionados })
+    
+    if (!this.state.apertouBotaoCarrinho) {
+      this.setState({ apertouBotaoCarrinho: !this.state.apertouBotaoCarrinho })
+    }
 
   }
   
