@@ -301,7 +301,7 @@ class App extends React.Component {
 
     const renderItemAberto = () => {
       const itemAberto = this.state.itens.find( item => item.id === this.state.idItemClicado);
-      return <Item fechaItem={this.onClickAbrirCard} key={itemAberto.id} texto={itemAberto.texto} imagem={itemAberto.imagem} valor={itemAberto.valor} />;
+      return <Item comprar={() => this.onClickSelecionaItem(itemAberto.id)}fechaItem={this.onClickAbrirCard} key={itemAberto.id} texto={itemAberto.texto} imagem={itemAberto.imagem} valor={itemAberto.valor} />;
     }
 
     return (
