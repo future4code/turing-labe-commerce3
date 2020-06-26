@@ -177,13 +177,11 @@ class App extends React.Component {
 
     let resultado = 0;
     
-    resultado = this.state.itensSelecionados.reduce( (total, item) => {
-      if( item && item.valor ) {
-        return total + (item.valor * item.quantidade)
-      } else {
-        return resultado
+    this.state.itensSelecionados.forEach( item => {
+      if ( item ) {
+        resultado += (item.valor * item.quantidade)
       }
-    }, 0)
+    })
 
     return (
         <ContainerCarrinho>
