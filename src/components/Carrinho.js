@@ -2,9 +2,6 @@ import React from "react"
 import styled from "styled-components"
 import iconeExcluir from '../images/excluir.svg'
 
-const ContainerCarrinho = styled.div`
-    display: inline-block;
-`
 
 const ListaCarrinho = styled.li`
     width: 100%;
@@ -35,33 +32,30 @@ class Carrinho extends React.Component {
 
     state = {
         resultado: 0,
-        itens: this.props.lista || [],
-        temItem: false
+        item: this.props.item || [],
     }
 
     componentDidMount () {   
 
-        this.state.itens.forEach ((item) => {
-        resultadoTotal += item.quantidade * item.valor        
-        })
+        // this.state.itens.forEach ((item) => {
+        // resultadoTotal += item.quantidade * item.valor        
+        // })
 
-        this.setState({resultado: resultadoTotal})
-
-        this.setState({itens: this.state.itens})
-        
+        // this.setState({resultado: resultadoTotal})
     }
     
     render() {
 
         return ( 
-            <ContainerCarrinho>
-                <ListaCarrinho key={this.props.item.id}>
-                    {this.props.item.quantidade}x {this.props.item.texto}
-                    <BotaoExcluir id={this.props.item.id} onClick={this.props.apagarItem}>
-                        <Icone id={this.props.item.id} onClick={this.props.apagarItem} src={iconeExcluir} alt="icone excluir"/>
-                    </BotaoExcluir>
-                </ListaCarrinho>
-            </ContainerCarrinho>   
+
+            <ListaCarrinho key={this.state.item.id}>
+                {this.state.item.quantidade}x {this.state.item.texto}
+                <BotaoExcluir id={this.state.item.id} onClick={this.state.item.apagarItem}>
+                    <Icone id={this.state.item.id} onClick={this.props.apagarItem} src={iconeExcluir} alt="icone excluir"/>
+                </BotaoExcluir>
+            </ListaCarrinho>
+
+
             // <ContainerCarrinho>
             //     <h2>Carrinho</h2>
             //     <ul>

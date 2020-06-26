@@ -65,7 +65,7 @@ const ItensHeader = styled.div `
   justify-content: space-between;
 `
 
-const CadastrarContainer = styled.div `
+const ContainerCarrinho = styled.div `
   flex: 1;
   padding: 16px;
   background-color: #ffffff;
@@ -134,7 +134,7 @@ class App extends React.Component {
       }
     ],
 
-    itensSelecionados: "",
+    itensSelecionados: [],
     
     valorInputValorMinimo: "",
     valorInputValorMaximo: "",
@@ -145,14 +145,15 @@ class App extends React.Component {
     idItemClicado: ""
   }
 
-  componentDidUpdate() {
-    localStorage.setItem("itens", JSON.stringify(this.state.itens))
-  };
+  // componentDidUpdate() {
+  //   localStorage.setItem("itens", JSON.stringify(this.state.itensSelecionados))
+  // };
 
-  componentDidMount() {
-    const itensString = localStorage.getItem("itens");
-    const itensObjeto = JSON.parse(itensString);
-  };
+  // componentDidMount() {
+
+  //   localStorage.getItem("itens") && this.setState({ itensSelecionados: JSON.parse(localStorage.getItem("itens")) });
+
+  // };
 
   onChangeValorMinimo = event => {
     this.setState({valorInputValorMinimo: event.target.value})
@@ -184,6 +185,8 @@ class App extends React.Component {
     const itemSelecionado = this.state.itens.filter((item) => {
       return item.id === id
     })
+
+    
     itemSelecionado.forEach( item => {
       if ( this.state.itensSelecionados.includes(item) ) {
         item.quantidade += 1
@@ -191,30 +194,8 @@ class App extends React.Component {
         this.setState({ itensSelecionados: [...this.state.itensSelecionados, item] })
       }
     })
-
-
-    // const itemSelecionado = this.state.itens.find( item => {
-    //   return item.id === id
-    // })
-
-    // let novosItensSelecionados = [...this.state.itensSelecionados]
-    
-    // console.log(!novosItensSelecionados.includes(itemSelecionado))
-    
-    // if (!novosItensSelecionados.includes(itemSelecionado)) {
-    //   novosItensSelecionados.push(itemSelecionado)
-    // } else {
-    //   novosItensSelecionados = novosItensSelecionados.map((item) => {
-    //     if (item.id === id) {
-    //       return {...item, quantidade: item.quantidade + 1}
-    //     }
-    //     return item
-    //   })
-    // }
-    
-    // this.setState({ itensSelecionados: novosItensSelecionados })
-    
-    // console.log(this.state.itensSelecionados)
+      
+    this.forceUpdate();
 
     if (!this.state.apertouBotaoCarrinho) {
       this.setState({ apertouBotaoCarrinho: !this.state.apertouBotaoCarrinho })
@@ -224,23 +205,37 @@ class App extends React.Component {
 
   onClickApagarItem = event => {
 
-    const novaLista = this.state.itensSelecionados.map(item => {
-      if ( Number(event.target.id) === item.id ) {
-        if ( item.quantidade === 1 ) {
-          return item.id !== Number(event.target.id)
-        } else {
-          const novoItem = {
-            ...item,
-            quantidade: Number(item.quantidade) - 1
-          }
-          return novoItem
-        }
-      } else {
-        return item
-      }
-    })
+  let listaFiltrada;
+  
+  this.state.itensSelecionados.forEach((item, i, a) => {
 
-    this.setState({ itensSelecionados: novaLista })
+      if ( item.quantidade > 1 ) {
+
+        const novoItem = {
+          ...item,
+          quantidade: item.quantidade - 1
+        }
+
+        let novoArray = [...this.state.itensSelecionados]
+
+        novoArray.splice(i)
+
+        novoArray = [...novoArray, novoItem]
+
+        return listaFiltrada = novoArray;
+
+
+      } else {
+        const novaListaFiltrada = this.state.itensSelecionados.filter( itemNovo => {
+          return item.id !== Number(event.target.id)
+        })
+
+        return listaFiltrada = novaListaFiltrada;
+      }
+      
+    })
+    
+    this.setState({ itensSelecionados: listaFiltrada })
 
   }
   
@@ -285,11 +280,27 @@ class App extends React.Component {
 
     // const renderCarrinho =  (this.state.apertouBotaoCarrinho) ? constroiCarrinho() : null;
     const renderCarrinho =  () => {
+
+      let resultado = 0;
+
       if (this.state.apertouBotaoCarrinho) {
-        const constroiCarrinho = this.state.itens.map( (item, i, a) => {
-          return <Carrinho key={item.id} quantidade={item.quantidade} texto={item.texto} item={item.id} id={item.id} apagarItem={this.onClickApagarItem}/>
-        })
-        return constroiCarrinho;
+        return (
+          <ContainerCarrinho>
+            <h2>Carrinho</h2>
+            {this.state.itensSelecionados.map( item => {
+              resultado += item.valor
+              return <Carrinho key={item.id} item={item} apagarItem={this.onClickApagarItem}/>
+            })}
+            <p><strong>R$ {resultado}</strong></p>
+          </ContainerCarrinho>
+        )
+        
+        // const constroiCarrinho = this.state.itensSelecionados.map( (item, i, a) => {
+        //   return <ContainerCarrinho></ContainerCarrinho>
+          
+        //   // <Carrinho key={item.id} quantidade={item.quantidade} texto={item.texto} item={item.id} id={item.id} apagarItem={this.onClickApagarItem}/>
+        // })
+        // return constroiCarrinho;
       } else {
         return null;
       }
@@ -338,9 +349,6 @@ class App extends React.Component {
           {renderCarrinho()}
           {renderItemAberto()}
           <BtnContainer>
-            <BtnCarrinho onClick={this.onClickShowCadastrar}>
-              <Icone src={iconeCadastrar} alt="icone carrinho"/>
-            </BtnCarrinho>
             <BtnCarrinho onClick={this.onClickAbrirCarrinho} >
               <Icone src={iconeCarrinho} alt="icone carrinho"/>
             </BtnCarrinho>
