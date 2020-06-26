@@ -72,7 +72,7 @@ const CadastrarContainer = styled.div `
 `
 
 const BtnContainer = styled.div `
-  position: absolute;
+  position: fixed;
   bottom: 16px;
   right: 16px;
 `
@@ -98,7 +98,7 @@ class App extends React.Component {
   state = {
     itens: [
       {
-        id: 123,
+        id: 1233,
         texto: "Camiseta manga comprida Take me",
         imagem: "https://ordertees.net/wp-content/uploads/2019/08/Vintage-Never-Forget-Pluto-T-Shirt-Funny-Space-Graphic-Tees.jpg",
         valor: 100,
@@ -126,9 +126,9 @@ class App extends React.Component {
         quantidade: 1
       },
       {
-        id: 1236,
-        texto: "Camiseta Pluto never forget",
-        imagem: "https://printteestore.com/wp-content/uploads/2019/Image/636952023189511389/Vintage-Never-Forget-Pluto-Funny-Space-Graphic_Premium-T-shirt_True-Royal.JPEG",
+        id: 1237,
+        texto: "Camiseta Gravity brings me down",
+        imagem: "https://i.rocdn.com/v2/30074984?w=1024&h=1024",
         valor: 80,
         quantidade: 1
       }
@@ -140,23 +140,18 @@ class App extends React.Component {
     valorInputValorMaximo: "",
     valorInputValorBusca: "",
 
-    valorInputNovoTexto: "",
-    valorInputNovoImg: "",
-    valorInputNovoValor: "",
-
-    showCadastrar: false,
     apertouBotaoCarrinho: false,
     abreCard: false,
     idItemClicado: ""
   }
 
   componentDidUpdate() {
-    localStorage.setItem("tarefas", JSON.stringify(this.state.tarefas))
+    localStorage.setItem("itens", JSON.stringify(this.state.itens))
   };
 
   componentDidMount() {
-    const tarefasString = localStorage.getItem("tarefa");
-    const tarefasObjeto = JSON.parse(tarefasString);
+    const itensString = localStorage.getItem("itens");
+    const itensObjeto = JSON.parse(itensString);
   };
 
   onChangeValorMinimo = event => {
@@ -172,34 +167,10 @@ class App extends React.Component {
   }
 
   //Itens
-
-  //funcao adiciona item
-  onClickShowCadastrar = () => {
-    this.setState({showCadastrar: !this.state.showCadastrar});
-  }
-
-  onChangeInputNovoTexto = event => {
-    this.setState({valorInputNovoTexto: event.target.value})
-  }
-
-  onChangeInputNovoImagem = event => {
-    this.setState({valorInputNovoImg: event.target.value})
-  }
-
-  onChangeInputNovoValor = event => {
-    this.setState({valorInputNovoValor: event.target.value})
-  }
-
-  onClickCadastraNovoItem = () => {
-    const novoItem = {
-      id: Date.now(),
-      texto: this.state.valorInputNovoTexto,
-      imagem: this.state.valorInputNovoImg,
-      valor: this.state.valorInputNovoValor
-    }
-
-    const novalistaItens = [...this.state.itens, novoItem];
-    this.setState({ itens: novalistaItens, id:"", texto:"", imagem:"", valor:"", valorInputNovoTexto:"", valorInputNovoImg:"", valorInputNovoValor:"" })
+  //Abre Card
+  onClickAbrirCard = id => {
+    this.setState({abreCard: !this.state.abreCard})  
+    this.setState({idItemClicado: id})  
   }
 
   //Abre Carrinho
@@ -207,21 +178,12 @@ class App extends React.Component {
     this.setState({apertouBotaoCarrinho: !this.state.apertouBotaoCarrinho})
   } 
 
-  //Abre Card
-
-  onClickAbrirCard = id => {
-    this.setState({abreCard: !this.state.abreCard})  
-    this.setState({idItemClicado: id})  
-  } 
-
   //Adiciona item ao Carrinho
-
   onClickSelecionaItem = id => {
 
     const itemSelecionado = this.state.itens.filter((item) => {
       return item.id === id
     })
-
     itemSelecionado.forEach( item => {
       if ( this.state.itensSelecionados.includes(item) ) {
         item.quantidade += 1
@@ -230,15 +192,52 @@ class App extends React.Component {
       }
     })
 
+
+    // const itemSelecionado = this.state.itens.find( item => {
+    //   return item.id === id
+    // })
+
+    // let novosItensSelecionados = [...this.state.itensSelecionados]
+    
+    // console.log(!novosItensSelecionados.includes(itemSelecionado))
+    
+    // if (!novosItensSelecionados.includes(itemSelecionado)) {
+    //   novosItensSelecionados.push(itemSelecionado)
+    // } else {
+    //   novosItensSelecionados = novosItensSelecionados.map((item) => {
+    //     if (item.id === id) {
+    //       return {...item, quantidade: item.quantidade + 1}
+    //     }
+    //     return item
+    //   })
+    // }
+    
+    // this.setState({ itensSelecionados: novosItensSelecionados })
+    
+    // console.log(this.state.itensSelecionados)
+
     if (!this.state.apertouBotaoCarrinho) {
-      this.setState({apertouBotaoCarrinho: !this.state.apertouBotaoCarrinho})
+      this.setState({ apertouBotaoCarrinho: !this.state.apertouBotaoCarrinho })
     }
+
   } 
 
   onClickApagarItem = event => {
 
-    const novaLista = this.state.itensSelecionados.filter( item => {
-      return item.id !== Number(event.target.id)
+    const novaLista = this.state.itensSelecionados.map(item => {
+      if ( Number(event.target.id) === item.id ) {
+        if ( item.quantidade === 1 ) {
+          return item.id !== Number(event.target.id)
+        } else {
+          const novoItem = {
+            ...item,
+            quantidade: Number(item.quantidade) - 1
+          }
+          return novoItem
+        }
+      } else {
+        return item
+      }
     })
 
     this.setState({ itensSelecionados: novaLista })
@@ -295,25 +294,9 @@ class App extends React.Component {
     const renderItemAberto = () => {
       if(this.state.abreCard) {
         const item = itemAberto.map( (item, i, a) => {
-          return <Item key={item.id} texto={item.texto} imagem={item.imagem} valor={item.valor} />
+          return <Item fechaItem={this.onClickAbrirCard} key={item.id} texto={item.texto} imagem={item.imagem} valor={item.valor} />
         })
         return item;
-      }
-    }
-
-    const cadastroNovoProduto = () => {
-      if (this.state.showCadastrar) {
-        return (
-          <CadastrarContainer>
-            <div>
-              <h2>Acrescentar novo item</h2>
-              <input value={this.state.valorInputNovoTexto} placeholder="produto" onChange={this.onChangeInputNovoTexto}></input>
-              <input value={this.state.valorInputNovoImg} placeholder="link da imagem do produto" onChange={this.onChangeInputNovoImagem}></input>
-              <input value={this.state.valorInputNovoValor} placeholder="valor do produto" type="number" onChange={this.onChangeInputNovoValor}></input>
-              <button onClick={this.onClickCadastraNovoItem}>Cadastrar</button>
-            </div>
-          </CadastrarContainer>
-        )
       }
     }
 
@@ -342,9 +325,8 @@ class App extends React.Component {
               })}
             </ListItens>
           </ItensContainer>
-          {renderItemAberto()}
           {renderCarrinho}
-          {cadastroNovoProduto()}
+          {renderItemAberto()}
           <BtnContainer>
             <BtnCarrinho onClick={this.onClickShowCadastrar}>
               <Icone src={iconeCadastrar} alt="icone carrinho"/>

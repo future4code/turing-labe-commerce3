@@ -38,7 +38,8 @@ class Carrinho extends React.Component {
 
     state = {
         resultado: 0,
-        itens: this.props.lista || []
+        itens: this.props.lista || [],
+        temItem: false
     }
 
     componentDidMount () {   
@@ -54,14 +55,14 @@ class Carrinho extends React.Component {
     }
     
     render() {
-            
+
         return (            
             <ContainerCarrinho>
                 <h2>Carrinho</h2>
                 <ul>
                     {this.state.itens.map ((item) =>   {
                         return  (
-                            <ListaCarrinho key={item.id}>{item.quantidade}x {item.texto} <BotaoExcluir id={item.id} onClick={this.props.apagarItem}><Icone src={iconeExcluir} alt="icone excluir"/></BotaoExcluir></ListaCarrinho>
+                            <ListaCarrinho key={item.id}>{item.quantidade}x {item.texto} <BotaoExcluir id={item.id} onClick={this.props.apagarItem}><Icone id={item.id} onClick={this.props.apagarItem} src={iconeExcluir} alt="icone excluir"/></BotaoExcluir></ListaCarrinho>
                         )
                     })} 
                 </ul>

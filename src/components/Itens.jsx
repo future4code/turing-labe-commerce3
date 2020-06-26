@@ -19,11 +19,13 @@ const Imagem = styled.img`
     object-fit: cover;
     border-radius: 5px;
     margin-bottom: 8px;
+    cursor: pointer;
 `
 const ItemTitulo = styled.h4`
     font-size: 1.15rem;
     margin-top: 0;
     margin-bottom: 8px;
+    cursor: pointer;
 `
 const ItemTexto = styled.p`
     font-size: 1rem;
