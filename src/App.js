@@ -283,8 +283,18 @@ class App extends React.Component {
 
     };
 
-    const renderCarrinho =  (this.state.apertouBotaoCarrinho) ? <Carrinho lista={this.state.itensSelecionados} apagarItem={this.onClickApagarItem}/> : null;
-    
+    // const renderCarrinho =  (this.state.apertouBotaoCarrinho) ? constroiCarrinho() : null;
+    const renderCarrinho =  () => {
+      if (this.state.apertouBotaoCarrinho) {
+        const constroiCarrinho = this.state.itens.map( (item, i, a) => {
+          return <Carrinho key={item.id} quantidade={item.quantidade} texto={item.texto} item={item.id} id={item.id} apagarItem={this.onClickApagarItem}/>
+        })
+        return constroiCarrinho;
+      } else {
+        return null;
+      }
+    }
+
     const itemAberto = this.state.itens.filter( item => {
       if(item.id === this.state.idItemClicado) {
         return item.texto
@@ -325,7 +335,7 @@ class App extends React.Component {
               })}
             </ListItens>
           </ItensContainer>
-          {renderCarrinho}
+          {renderCarrinho()}
           {renderItemAberto()}
           <BtnContainer>
             <BtnCarrinho onClick={this.onClickShowCadastrar}>

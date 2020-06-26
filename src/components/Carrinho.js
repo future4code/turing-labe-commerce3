@@ -3,10 +3,7 @@ import styled from "styled-components"
 import iconeExcluir from '../images/excluir.svg'
 
 const ContainerCarrinho = styled.div`
-    border: 1px solid black;
-    margin: 0;
-    flex: 1;
-    padding: 16px;
+    display: inline-block;
 `
 
 const ListaCarrinho = styled.li`
@@ -56,18 +53,26 @@ class Carrinho extends React.Component {
     
     render() {
 
-        return (            
+        return ( 
             <ContainerCarrinho>
-                <h2>Carrinho</h2>
-                <ul>
-                    {this.state.itens.map ((item) =>   {
-                        return  (
-                            <ListaCarrinho key={item.id}>{item.quantidade}x {item.texto} <BotaoExcluir id={item.id} onClick={this.props.apagarItem}><Icone id={item.id} onClick={this.props.apagarItem} src={iconeExcluir} alt="icone excluir"/></BotaoExcluir></ListaCarrinho>
-                        )
-                    })} 
-                </ul>
-                <p>Total <b>R$ {this.state.resultado}</b></p>
-            </ContainerCarrinho>          
+                <ListaCarrinho key={this.props.item.id}>
+                    {this.props.item.quantidade}x {this.props.item.texto}
+                    <BotaoExcluir id={this.props.item.id} onClick={this.props.apagarItem}>
+                        <Icone id={this.props.item.id} onClick={this.props.apagarItem} src={iconeExcluir} alt="icone excluir"/>
+                    </BotaoExcluir>
+                </ListaCarrinho>
+            </ContainerCarrinho>   
+            // <ContainerCarrinho>
+            //     <h2>Carrinho</h2>
+            //     <ul>
+            //         {this.state.itens.map ((item) =>   {
+            //             return  (
+            //                 <ListaCarrinho key={this.props.item.id}>{this.props.item.quantidade}x {this.props.item.texto} <BotaoExcluir id={this.props.item.id} onClick={this.props.apagarItem}><Icone id={this.props.item.id} onClick={this.props.apagarItem} src={iconeExcluir} alt="icone excluir"/></BotaoExcluir></ListaCarrinho>
+            //             )
+            //         })} 
+            //     </ul>
+            //     <p>Total <b>R$ {this.state.resultado}</b></p>
+            // </ContainerCarrinho>          
         )
 
       }
