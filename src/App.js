@@ -194,6 +194,12 @@ class App extends React.Component {
   }
 
   //Itens
+  
+  //Abre Card
+  onClickAbrirCard = id => {
+    this.setState({abreCard: !this.state.abreCard})  
+    this.setState({idItemClicado: id})  
+  } 
 
   //funcao adiciona item
   onClickShowCadastrar = () => {
@@ -229,16 +235,7 @@ class App extends React.Component {
     this.setState({apertouBotaoCarrinho: !this.state.apertouBotaoCarrinho})
   } 
 
-  //Abre Card
-
-  onClickAbrirCard = id => {
-    this.setState({abreCard: !this.state.abreCard})  
-    this.setState({idItemClicado: id})  
-  } 
-
   //Adiciona item ao Carrinho
-
-
   onClickSelecionaItem = id => {
 
     const itemSelecionado = this.state.itens.filter((item) => {
@@ -284,10 +281,22 @@ class App extends React.Component {
 
   onClickApagarItem = event => {
 
-    const novaLista = this.state.itensSelecionados.filter (item => {
-      return item.id !== Number(event.target.id)
+    const novaLista = this.state.itensSelecionados.map(item => {
+      if ( Number(event.target.id) === item.id ) {
+        if ( item.quantidade === 1 ) {
+          return item.id !== Number(event.target.id)
+        } else {
+          const novoItem = {
+            ...item,
+            quantidade: Number(item.quantidade) - 1
+          }
+          return novoItem
+        }
+      } else {
+        return item
+      }
     })
-    
+
     this.setState({ itensSelecionados: novaLista })
 
   }
